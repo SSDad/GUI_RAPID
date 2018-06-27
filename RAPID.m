@@ -1,13 +1,13 @@
  function varargout = RAPID(varargin)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
-% RAPID GUI
+% Version 1
 % Zhen Ji, 2016
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 global RadoncID
 % RadoncID{1} = '12160126';
-RadoncID{1} = '11152222';
+% RadoncID{1} = '11152222';
 % RadoncID{1} = '17150044';
 
 %% global
@@ -25,7 +25,7 @@ global hMenuItem
 CBCBmem = [];
 
 %% folder
-fd_data = fullfile(['C:\Users\', getenv('username')], 'Box Sync\RAPID\Data\Data_Processed');  % image data folder
+fd_data = fullfile(['C:\Users\', getenv('username')], 'Box Sync\RAPID\Data\Data_Processed_old');  % image data folder
 % fd_data = 'D:\Box Sync\RAPID\Data\Data_Processed';  % image data folder
 % fd_data = 'Z:\Varian MRA\Lung\Data\Data_Processed';
 
