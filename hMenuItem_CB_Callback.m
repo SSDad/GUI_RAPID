@@ -1,0 +1,79 @@
+function hMenuItem_CB_Callback(src, evnt)
+
+hFig_main = ancestor(src, 'Figure');
+data_main = guidata(hFig_main);
+
+selected = data_main.selected;
+hPlotObj = data_main.hPlotObj;
+hAxis = data_main.hAxis;
+
+if ~data_main.flag.CBLoaded
+    [CB] = loadCB(hFig_main);
+    data_main.flag.CBLoaded = true;
+
+%     CB.Lim = [min(CB.minI) max(CB.maxI)]; CB.Lim = double(CB.Lim);
+    selected.idxDate = 1;
+
+    % save data
+    data_main.selected = selected;
+    data_main.CB = CB;
+    guidata(hFig_main, data_main);
+
+    set(data_main.hMenuItem.dcmInfo, 'Enable', 'on');
+else
+    CB = data_main.CB;
+end
+
+% Axial
+ICB{1} = CB.MMI(:,:,selected.iSlice.z, selected.idxDate);
+
+set(hPlotObj.CT(1), 'CData', []); 
+set(hPlotObj.CT(1), 'CData', ICB{1}); 
+set(hPlotObj.CT(1), 'visible', 'on'); 
+set(hAxis.CT(1), 'CLim', [CB.Lim(1) CB.Lim(2)]);
+
+%Sagittal
+ICB{2} = rot90(squeeze(CB.MMI(:, selected.iSlice.x, :, selected.idxDate)));
+
+set(hPlotObj.CT(2), 'CData', []); 
+set(hPlotObj.CT(2), 'CData', ICB{2}); 
+set(hPlotObj.CT(2), 'visible', 'on'); 
+set(hAxis.CT(2), 'CLim', [CB.Lim(1) CB.Lim(2)]);
+
+%Coronal
+ICB{3} = rot90(squeeze(CB.MMI(selected.iSlice.y, :, :, selected.idxDate)));
+
+set(hPlotObj.CT(3), 'CData', []); 
+set(hPlotObj.CT(3), 'CData', ICB{3}); 
+set(hPlotObj.CT(3), 'visible', 'on'); 
+set(hAxis.CT(3), 'CLim', [CB.Lim(1) CB.Lim(2)]);
+
+% contrast bar
+set(get(hAxis.contrast1, 'children'), 'visible', 'on')
+showContrast_MV(hFig_main, hAxis.CT, hAxis.contrast1, ICB{1}, CB.Lim);
+set(get(hAxis.contrast2, 'children'), 'visible', 'off')
+
+% CBDate table
+hTable = data_main.hTable;
+hMenuItem = data_main.hMenuItem;
+
+CBDate = cell(CB.nCB, 1);
+for iD = 1:size(CB.dateCreated, 1)
+    CBDate{iD, 1} = CB.dateCreated(iD, :);
+end
+set(hTable.CBDate, 'Data', CBDate, 'Visible', 'on');
+set(hMenuItem.CBDate, 'Enable', 'on', 'Checked', 'on');
+
+set(hTable.PL, 'Visible', 'off');
+set(hMenuItem.Patient, 'Checked', 'off');
+set(hTable.SS, 'Visible', 'off');
+set(hMenuItem.SS, 'Checked', 'off');
+
+% menu on/off
+set(hMenuItem.CT, 'Checked', 'off');
+set(hMenuItem.CB, 'Checked', 'on');
+set(hMenuItem.CTCB, 'Checked', 'off');
+
+% set(hText.playInterval, 'Visible', 'on');
+% set(hPopup.playInterval, 'Visible', 'on');
+% set(hPushbutton.playCBDate, 'Visible', 'on');
