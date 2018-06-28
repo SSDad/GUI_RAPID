@@ -8,17 +8,18 @@ if ~data_main.flag.SSLoaded
     ffd = fullfile(data_main.fd_data, data_main.RadoncIDFolder);
     ffn_SS = fullfile(ffd, [data_main.RadoncID, '_SS']);
     load(ffn_SS)
-
-    ffn_SS_SagCor = fullfile(ffd, [data_main.RadoncID, '_SS_SagCor']);
-    load(ffn_SS_SagCor)
-    
     data_main.flag.SSLoaded = true;
-
     SS.contourColor = contourColor;
     SS.sNames = sNames;
     SS.structures = structures;
     data_main.SS = SS;
-    data_main.SS_SagCor = SS_SagCor;
+
+    ffn_SS_SagCor = fullfile(ffd, [data_main.RadoncID, '_SS_SagCor.mat']);
+    if exist(ffn_SS_SagCor, 'file')
+        load(ffn_SS_SagCor);
+        data_main.SS_SagCor = SS_SagCor;
+        data_main.flag.SS_SagCorLoaded = true;
+    end
     
     % Fill SS Table
     nS = length(SS.structures);
@@ -32,13 +33,16 @@ if ~data_main.flag.SSLoaded
 
 %     set(data_main.hTable.SS, 'Data', tableData.Struct, 'Visible',   'on');
     data_main.hTable.SS.Data = tableData.Struct;
-    data_main.hTable.SS.Visible = 'on';
-        
+    data_main.hPanel.SS.Visible = 'on';
+    jScroll = findjobj(data_main.hTable.SS);
+jTable = jScroll.getViewport.getView;
+jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+    
     % PTV index
     selected = data_main.selected;
     selected.idxSS = 1;
     for j = 1:length(SS.sNames)
-        if strcmp('PTV', SS.sNames{j}(1:3))
+        if contains(SS.sNames{j}, 'PTV')  % strcmp('PTV', SS.sNames{j}(1:3))
             selected.idxSS = j;
             data_main.hTable.SS.Data{j, 1} = true;
             break
@@ -62,19 +66,22 @@ if ~data_main.flag.SSLoaded
 else
     if strcmp(data_main.hMenuItem.SS.Checked, 'on')
         data_main.hMenuItem.SS.Checked = 'off';
-        set(data_main.hTable.SS, 'visible', 'off');
+        set(data_main.hPanel.SS, 'visible', 'off');
     else
         data_main.hMenuItem.SS.Checked = 'on';
-        set(data_main.hTable.SS, 'visible', 'on');
+        set(data_main.hPanel.SS, 'visible', 'on');
     end
 end
 
-set(data_main.hTable.PL, 'visible', 'off');
+set(data_main.hPanel.PL, 'visible', 'off');
 set(data_main.hMenuItem.Patient, 'checked', 'off');
-
-set(data_main.hTable.CBDate, 'visible', 'off');
-set(data_main.hMenuItem.CBDate, 'checked', 'off');
 
 updateSS(hFig_main, '1', data_main.selected.iSlice.z);
 updateSS(hFig_main, '2', data_main.selected.iSlice.x);
 updateSS(hFig_main, '3', data_main.selected.iSlice.y);
+
+%% Analysis
+if data_main.flag.CBLoaded
+    set(data_main.hMenuItem.AnalysisZ, 'Enable', 'on');
+end
+updatePDF(data_main);

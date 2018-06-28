@@ -1,4 +1,4 @@
-function [subImg, subPDF, iso] = fun_getPDF(CT, CB, SS, selected, nSub)
+function [subImg, subPDF, iso] = fun_getPDF(CT, CB, CBinfo, SS, selected)
 
 %% iso on CT
 dx = CT.xx(2)-CT.xx(1);
@@ -6,11 +6,19 @@ dy = CT.yy(2)-CT.yy(1);
 iso.x = (CT.iso(1)-CT.xx(1))/dx;
 iso.y = (CT.iso(2)-CT.yy(1))/dy;
 
+subImg = [];
+subPDF = [];
+
 %% contours
 [cont] = fun_getContour(selected.idxSS, SS.structures, SS.sNames, CT.zz);
 contData = cont.data;
 
-iSlice = selected.Slice;
+iSlice = selected.iSlice.z;
+
+indS = find(~cellfun(@isempty,contData));
+
+if indS(1) <= iSlice && iSlice <= indS(end) 
+    
 xx = [];
 yy = [];
 for iS = 1:length(contData{iSlice})
@@ -50,8 +58,20 @@ subImg.CT = IC_CT;
 subImg.contCB.x = xxC;
 subImg.contCB.y = yyC;
 
-%% CB
-I_CB = CB.MMI(:,:,iSlice,1);
+% % CB
+[M, N, P] = size(CT.MM);
+I_CB = zeros(M, N);
+iDate = 1;
+
+MMI = CB(iDate).MMI;
+ind1 = CB(iDate).ind1;
+ind2 = CB(iDate).ind2;
+% CBLim = CB(iDate).Lim;
+% Axial
+
+if ind1(1) <= iSlice && iSlice<=ind2(1)
+    I_CB(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,iSlice-ind1(1)+1);
+end
 
 if any(I_CB(:))
 
@@ -59,34 +79,29 @@ if any(I_CB(:))
     IC_CB(~BW) = 0;
 
     subImg.CB1 = IC_CB;
-    subImg.machineName1 = CB.machineName{1};
+    subImg.machineName1 = CBinfo(1).dcmInfo.ManufacturerModelName;
 
-    if iSlice == CT.idx_iso
-        [points, A] = fun_tumorSegmentation(IC_CB, iso.x, iso.y);
-        subImg.tumor1.points = points;
-        subImg.tumor1.A = A;
-    end
-
+    nSub = min(length(CBinfo)-selected.idxDate+1, 4);
     for iSub = 1:nSub
-        iCB = selected.idxDate(1)+iSub-1;
-        I_CB = CB.MMI(:,:,iSlice,iCB);
+        iCB = selected.idxDate+iSub-1;
+        MMI = CB(iCB).MMI;
+        ind1 = CB(iCB).ind1;
+        ind2 = CB(iCB).ind2; 
+        I_CB = zeros(M, N);
+
+        if ind1(1) <= iSlice && iSlice<=ind2(1)
+            I_CB(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,iSlice-ind1(1)+1);
+        end
+        
         IC_CB = imcrop(I_CB, [x1 y1 x2-x1 y2-y1]);
         IC_CB(~BW) = 0;
         subImg.CB(:,:,iSub) = IC_CB;
-        subImg.Date{iSub} = CB.dateCreated(iCB, :);
-        subImg.machineName{iSub} = CB.machineName{iCB};
-        
-        % tumor
-        subImg.tumor{iSub} = [];
-        if iSlice == CT.idx_iso
-            [points, A] = fun_tumorSegmentation(IC_CB, iso.x, iso.y);
-            subImg.tumor{iSub}.points = points;
-            subImg.tumor{iSub}.A = A;
-        end
-
+        subImg.Date{iSub} = CBinfo(iCB).date;
+        subImg.machineName{iSub} = CBinfo(iCB).dcmInfo.ManufacturerModelName;
+       
     end
 
-    %% stat
+    % stat
     nBin = 100;
 
     VCT = IC_CT(BW);
@@ -146,8 +161,6 @@ if any(I_CB(:))
         subPDF.CB.yAbs{iSub} = yy;
         subPDF.CB.xAbs{iSub} = xx;
      end
+end
 
-else
-    subImg = [];
-    subPDF = [];
 end

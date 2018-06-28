@@ -26,10 +26,12 @@ function hMenuItem_Patient_Callback(src, evnt)
             end
         end
         set(data_main.hTable.PL, 'Data', ptNo'); 
-        set(data_main.hTable.PL, 'visible', 'on');
+        set(data_main.hPanel.PL, 'visible', 'on');
         set(data_main.hMenuItem.Patient, 'checked', 'on');
-        set(data_main.hPushbutton.ptSelection, 'visible', 'on');
-        set(data_main.hTable.ptInfo, 'visible', 'off');
+        
+        jScroll = findjobj(data_main.hTable.PL);
+        jTable = jScroll.getViewport.getView;
+        jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
         
         data_main.fd_data = fd_data;
         guidata(hFig_main, data_main);
@@ -38,20 +40,20 @@ function hMenuItem_Patient_Callback(src, evnt)
     else
         if strcmp(get(data_main.hMenuItem.Patient, 'checked'), 'on')
             set(data_main.hMenuItem.Patient, 'checked', 'off');
-            set(data_main.hTable.PL, 'visible', 'off');
-            set(data_main.hPushbutton.ptSelection, 'visible', 'off');
+            set(data_main.hPanel.PL, 'visible', 'off');
 
             set(hFig_main, 'WindowScrollWheelFcn', @mscb);
         else
             set(data_main.hMenuItem.Patient, 'checked', 'on');
-            set(data_main.hTable.PL, 'visible', 'on');
-            set(data_main.hPushbutton.ptSelection, 'visible', 'on');
-            set(data_main.hTable.ptInfo, 'visible', 'off');
-            set(data_main.hTable.SS, 'visible', 'off');
+            set(data_main.hPanel.PL, 'visible', 'on');
+            set(data_main.hPanel.CBDate, 'visible', 'off');
             set(data_main.hMenuItem.CBDate, 'checked', 'off');
-            set(data_main.hTable.CBDate, 'visible', 'off');
+            set(data_main.hPanel.SS, 'visible', 'off');
+            set(data_main.hMenuItem.SS, 'checked', 'off');
 
             set(hFig_main, 'WindowScrollWheelFcn', []);
         end
     end
     
+    set(data_main.hPanel.ptInfo, 'visible', 'off');
+

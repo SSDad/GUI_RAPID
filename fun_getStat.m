@@ -1,6 +1,7 @@
-function [CBCB] = fun_getStat(CT, CB, SS, selected)
+function [CBCB] = fun_getStat(CT, CB, SS, selected, CBinfo)
 
 %% dx dy
+[M1, N1, ~] = size(CT.MM);
 dx = CT.xx(2)-CT.xx(1);
 dy = CT.yy(2)-CT.yy(1);
 nCT = size(CT.MM, 3);
@@ -11,20 +12,28 @@ iso.y = (CT.iso(2)-CT.yy(1))/dy;
 [cont] = fun_getContour(selected.idxSS, SS.structures, SS.sNames, CT.zz);
 contData = cont.data;
 
+nCB = length(CB);
 % stat
-CBCB = struct('nmse', NaN(nCT, CB.nCB), ...
-                    'CC',     NaN(nCT, CB.nCB), ...
-                    'mie',    NaN(nCT, CB.nCB), ...
-                    'fsim',   NaN(nCT, CB.nCB), ...
-                    'areaDelta', NaN(nCT, CB.nCB), ...
-                    'morphDelta', NaN(nCT, CB.nCB));
+CBCB = struct('nmse', NaN(nCT, nCB), ...
+                    'CC',     NaN(nCT, nCB), ...
+                    'mie',    NaN(nCT, nCB), ...
+                    'fsim',   NaN(nCT, nCB), ...
+                    'areaDelta', NaN(nCT, nCB), ...
+                    'morphDelta', NaN(nCT, nCB));
 
 %                 CBCB = struct('nmse', NaN(nCT, CB.nCB), ...
 %                     'CC',     NaN(nCT, CB.nCB), ...
 %                     'mie',    NaN(nCT, CB.nCB), ...
 %                     'fsim',   NaN(nCT, CB.nCB));
-                
-ind_com = intersect(cont.ind, CB.ind{1});
+
+for iCB = 1:nCB
+    z1(iCB) = CB(iCB).ind1(1);
+    z2(iCB) = CB(iCB).ind2(1);
+end
+
+ind_com = intersect(cont.ind, max(z1):min(z2));
+
+h = waitbar(0, 'Calculating Metrics...');
 
 for iC = 1:length(ind_com)
     iSlice = ind_com(iC);
@@ -76,11 +85,22 @@ for iC = 1:length(ind_com)
     numCT = histcounts(VCT, nBin);
     pdfVCT = numCT/sum(numCT);
 
-    BW3d = repmat(BW, 1, 1, CB.nCB);
+    BW3d = repmat(BW, 1, 1, nCB);
 
-    % sliceCut
-    sliceCut = CB.MMI(y1:y2, x1:x2, iSlice, :);
-    IC_CB = reshape(sliceCut, M, N, CB.nCB);
+    % CB sliceCut
+    for iCB = 1:nCB
+        ICB_z = zeros(M1, N1);
+        MMI = CB(iCB).MMI;
+        ind1 = CB(iCB).ind1;    
+        ind2 = CB(iCB).ind2;
+%         CBLim = CB(iCB).Lim;
+        ICB_z(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,iSlice-ind1(1)+1);
+        
+        IC_CB(:,:,iCB) = ICB_z(y1:y2, x1:x2);
+    end
+    
+%     sliceCut = CB.MMI(y1:y2, x1:x2, iSlice, :);
+%     IC_CB = reshape(sliceCut, M, N, CB.nCB);
     IC_CB(~BW3d) = 0;
     IC_CB = double(IC_CB);
 
@@ -95,11 +115,11 @@ for iC = 1:length(ind_com)
         edgeCB = linspace(minCB, maxCB, nBin+1);
     end
     
-    nBinCB = zeros(CB.nCB, 1);
-    pdf_CB = zeros(CB.nCB, nBin);
+    nBinCB = zeros(nCB, 1);
+    pdf_CB = zeros(nCB, nBin);
     
     %% CB
-    for iCB = 1:CB.nCB
+    for iCB = 1:nCB
 
         ICB = IC_CB(:,:,iCB);
         if any(ICB(:))
@@ -108,7 +128,8 @@ for iC = 1:length(ind_com)
 %             nBinCB(iCB) = length(unique(VCB));  % not use here, instead use 'nBinCT'
 
             % hist correlation coeff.
-            if strcmp(CB.machineName{1}, CB.machineName{iCB})
+%             if strcmp(CB.machineName{1}, CB.machineName{iCB})
+            if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
                 num_CB = histcounts(VCB, edgeCB);
             else
                 num_CB = histcounts(VCB, nBin);
@@ -134,7 +155,7 @@ for iC = 1:length(ind_com)
                 IC_CB1_abs2sum = sum(junk2(:))/numel(junk2);
             end
             
-            if strcmp(CB.machineName{1}, CB.machineName{iCB})
+            if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
                 IC_CB_norm = ICB/max(IC_CB(:));
                 CBCB.nmse(iSlice, iCB) = immse(IC_CB_norm, IC_CB1_abs)/IC_CB1_abs2sum;
             else                
@@ -157,4 +178,9 @@ for iC = 1:length(ind_com)
     CBCB.mie(iSlice, :) = CBCB.mie(iSlice, :)/CBCB.mie(iSlice, 1);
     CBCB.fsim(iSlice, :) = CBCB.fsim(iSlice, :)/CBCB.fsim(iSlice, 1);
     
+    clear IC_CB;
+    
+    waitbar(iC/length(ind_com))
+
 end
+close(h) 

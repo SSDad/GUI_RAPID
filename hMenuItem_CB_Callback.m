@@ -11,6 +11,8 @@ if ~data_main.flag.CBLoaded
     [CBinfo, CB] = loadCB(hFig_main);
     data_main.flag.CBLoaded = true;
 
+    data_main.flag.CBInfoTableFilled = false;
+    
 %     CB.Lim = [min(CB.minI) max(CB.maxI)]; CB.Lim = double(CB.Lim);
     selected.idxDate = 1;
 
@@ -19,8 +21,6 @@ if ~data_main.flag.CBLoaded
     data_main.CBinfo = CBinfo;
     data_main.CB = CB;
     guidata(hFig_main, data_main);
-
-    set(data_main.hMenuItem.dcmInfo, 'Enable', 'on');
 else
     CBinfo = data_main.CBinfo;
     CB = data_main.CB;
@@ -70,6 +70,7 @@ showContrast_MV(hFig_main, hAxis.CT, hAxis.contrast1, ICB{1}, CB(iDate).Lim);
 set(get(hAxis.contrast2, 'children'), 'visible', 'off')
 
 % CBDate table
+hPanel = data_main.hPanel;
 hTable = data_main.hTable;
 hMenuItem = data_main.hMenuItem;
 
@@ -77,18 +78,26 @@ CBDate = cell(length(CBinfo), 1);
 for iDate = 1:size(CBDate, 1)
     CBDate{iDate} = CBinfo(iDate).date;
 end
-set(hTable.CBDate, 'Data', CBDate, 'Visible', 'on');
+set(hTable.CBDate, 'Data', CBDate);
+set(hPanel.CBDate, 'Visible', 'on');
 set(hMenuItem.CBDate, 'Enable', 'on', 'Checked', 'on');
+jScroll = findjobj(hTable.CBDate);
+jTable = jScroll.getViewport.getView;
+jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
-set(hTable.PL, 'Visible', 'off');
-set(hMenuItem.Patient, 'Checked', 'off');
-set(hTable.SS, 'Visible', 'off');
-set(hMenuItem.SS, 'Checked', 'off');
+% set(hTable.PL, 'Visible', 'off');
+% set(hMenuItem.Patient, 'Checked', 'off');
+% set(hTable.SS, 'Visible', 'off');
+% set(hMenuItem.SS, 'Checked', 'off');
 
 % menu on/off
 set(hMenuItem.CT, 'Checked', 'off');
 set(hMenuItem.CB, 'Checked', 'on');
 set(hMenuItem.CTCB, 'Checked', 'off');
+
+set(hMenuItem.CBInfo, 'Enable', 'on');
+
+set(data_main.hPanel.ptInfo, 'visible', 'off');
 
 % set(hText.playInterval, 'Visible', 'on');
 % set(hPopup.playInterval, 'Visible', 'on');

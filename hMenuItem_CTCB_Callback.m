@@ -12,7 +12,7 @@ if ~data_main.flag.CBLoaded
     
     [CBinfo, CB] = loadCB(hFig_main);
     data_main.flag.CBLoaded = true;
-    set(data_main.hMenuItem.dcmInfo, 'Enable', 'on');
+%     set(data_main.hMenuItem.dcmInfo, 'Enable', 'on');
     selected.idxDate = 1;
     % save data
     data_main.selected = selected;
@@ -92,9 +92,7 @@ set(hAxis.CT(3), 'clim', [0 1]);
 IIO(3).CTn = ICTn_y;
 IIO(3).CBn = ICBn_y;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Contrast
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Contrast
 hCC(1) = hAxis.contrast1;
 hCC(2) = hAxis.contrast2;
 
@@ -104,6 +102,7 @@ set(get(hAxis.contrast1, 'children'), 'visible', 'on')
 set(hAxis.contrast2, 'visible', 'on')
 set(get(hAxis.contrast2, 'children'), 'visible', 'on')
 
+%% on/off
 % CB date table on
 set(data_main.hTable.CBDate, 'Visible', 'on');
 
@@ -111,3 +110,9 @@ set(data_main.hTable.CBDate, 'Visible', 'on');
 set(data_main.hMenuItem.CT, 'Checked', 'off');
 set(data_main.hMenuItem.CB, 'Checked', 'off');
 set(data_main.hMenuItem.CTCB, 'Checked', 'on');
+
+%% Analysis
+if data_main.flag.SSLoaded
+    set(data_main.hMenuItem.AnalysisZ, 'Enable', 'on');
+end
+updatePDF(data_main);

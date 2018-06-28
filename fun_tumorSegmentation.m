@@ -11,11 +11,15 @@ BW = im2bw(I_CB, level);
 
 BD = bwboundaries(BW);
 
-for iB = 1:length(BD)
-    pts = BD{iB};
-    if inpolygon(x0, y0, pts(:,1), pts(:,2))
-        points = pts;
-        A = polyarea(pts(:,1), pts(:,2));
-        break;
-    end
-end
+%% iso inside tumor
+% for iB = 1:length(BD)
+%     pts = BD{iB};
+%     if inpolygon(x0, y0, pts(:,1), pts(:,2))
+%         points = pts;
+%         A = polyarea(pts(:,1), pts(:,2));
+%         break;
+%     end
+% end
+
+points = BD{1};
+A = polyarea(points(:,1), points(:,2));

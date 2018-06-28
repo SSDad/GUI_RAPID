@@ -12,6 +12,13 @@ if ~data_main.flag.CTLoaded
     CT.Lim = double(CT.Lim);
 %     CT.MMn = single(mat2gray(CT.MM, CT.Lim));
     data_main.CT = CT;
+    
+  set(hFig_main, 'Name', ['RAPID_5 - ', data_main.RadoncIDfromTable, '  ',...
+                                    CT.dcmInfo.PatientName.FamilyName, ', ',...
+                                    CT.dcmInfo.PatientName.GivenName, '   ',...
+                                    CT.dcmInfo.PatientSex, ',   DOB: ',...
+                                    CT.dcmInfo.PatientBirthDate]);
+  
 else
     CT = data_main.CT;
 end
@@ -122,7 +129,7 @@ set(data_main.hMenuItem.CB, 'Checked', 'off');
 set(data_main.hMenuItem.CTCB, 'Checked', 'off');
 
 % tables off
-set(data_main.hTable.CBDate, 'Visible', 'off');
+% set(data_main.hTable.CBDate, 'Visible', 'off');
 
 %% save data
 data_main.iso = iso;

@@ -15,5 +15,11 @@ if numel(idcs)
         updateCTImage(hFig_main, '1', selected.iSlice.z);
         updateCTImage(hFig_main, '2', selected.iSlice.x);
         updateCTImage(hFig_main, '3', selected.iSlice.y);
-%     end
+        
+        updatePDF(data_main);
+        if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
+            updateStat(data_main);
+        end
+
+        %     end
 end

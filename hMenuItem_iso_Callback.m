@@ -20,6 +20,9 @@ data_main.selected.iSlice.z = iso.iSlice.z;
 data_main.selected.iSlice.x = iso.iSlice.x;
 data_main.selected.iSlice.y = iso.iSlice.y;
 
+updatePDF(data_main);
+if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
+    updateStat(data_main);
+end
+
 guidata(hFig_main, data_main);
-
-

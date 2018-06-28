@@ -8,6 +8,8 @@ load (ffn_CBinfo)
 set(hFig_main, 'pointer', 'watch')
 drawnow;
 
+h = waitbar(0, 'Loading Cone Beam...');
+
 for n = 1:length(CBinfo)
     ffn_CB = fullfile(ffd, [data_main.RadoncID, '_CB_', CBinfo(n).date, '_interp.mat']);
     load(ffn_CB)
@@ -16,6 +18,10 @@ for n = 1:length(CBinfo)
     CB(n).ind2 = ind2;  
     
     CB(n).Lim = double([min(CB(n).MMI(:)) max(CB(n).MMI(:))]); 
+
+    waitbar(n/length(CBinfo))
         
 end
 set(hFig_main, 'pointer', 'arrow')
+
+close(h) 
