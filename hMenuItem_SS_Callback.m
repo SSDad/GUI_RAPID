@@ -8,18 +8,17 @@ if ~data_main.flag.SSLoaded
     ffd = fullfile(data_main.fd_data, data_main.RadoncIDFolder);
     ffn_SS = fullfile(ffd, [data_main.RadoncID, '_SS']);
     load(ffn_SS)
+
+    ffn_SS_SagCor = fullfile(ffd, [data_main.RadoncID, '_SS_SagCor']);
+    load(ffn_SS_SagCor)
+    
     data_main.flag.SSLoaded = true;
+
     SS.contourColor = contourColor;
     SS.sNames = sNames;
     SS.structures = structures;
     data_main.SS = SS;
-
-    ffn_SS_SagCor = fullfile(ffd, [data_main.RadoncID, '_SS_SagCor.mat']);
-    if exist(ffn_SS_SagCor, 'file')
-        load(ffn_SS_SagCor);
-        data_main.SS_SagCor = SS_SagCor;
-        data_main.flag.SS_SagCorLoaded = true;
-    end
+    data_main.SS_SagCor = SS_SagCor;
     
     % Fill SS Table
     nS = length(SS.structures);
@@ -39,7 +38,7 @@ if ~data_main.flag.SSLoaded
     selected = data_main.selected;
     selected.idxSS = 1;
     for j = 1:length(SS.sNames)
-        if contains(SS.sNames{j}, 'PTV')  % strcmp('PTV', SS.sNames{j}(1:3))
+        if strcmp('PTV', SS.sNames{j}(1:3))
             selected.idxSS = j;
             data_main.hTable.SS.Data{j, 1} = true;
             break

@@ -9,33 +9,38 @@ hPlotObj = data_main.hPlotObj;
 hAxis = data_main.hAxis;
 
 if ~data_main.flag.CBLoaded
-    [CB] = loadCB(hFig_main);
+    
+    [CBinfo, CB] = loadCB(hFig_main);
     data_main.flag.CBLoaded = true;
     set(data_main.hMenuItem.dcmInfo, 'Enable', 'on');
     selected.idxDate = 1;
     % save data
     data_main.selected = selected;
+    data_main.CBinfo = CBinfo;
     data_main.CB = CB;
     guidata(hFig_main, data_main);
 else
+    CBinfo = data_main.CBinfo;
     CB = data_main.CB;
 end
 
-% CB.Lim = [min(CB.minI) max(CB.maxI)]; CB.Lim = double(CB.Lim);
-% CBLim = [data_main.CB.minI(selected.idxDate) data_main.CB.maxI(selected.idxDate)];
-% CBLim = double(CBLim);
+[M, N, P] = size(data_main.CT.MM);
 
+ICB_z = zeros(M, N);
+ICB_x = zeros(P, M);
+ICB_y = zeros(P, N);
+
+iDate = selected.idxDate;
+MMI = CB(iDate).MMI;
+ind1 = CB(iDate).ind1;
+ind2 = CB(iDate).ind2;
+CBLim = CB(iDate).Lim;
 % Axial
-ICB_z = CB.MMI(:,:,selected.iSlice.z, selected.idxDate);
-ICBn_z = mat2gray(ICB_z, [double(CB.minI(selected.idxDate)) double(CB.maxI(selected.idxDate))]);
-% ICBn_z = CB.MMIn(:,:,selected.iSlice.z, selected.idxDate);
+ICB_z(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,selected.iSlice.z-ind1(1)+1);
+ICBn_z = mat2gray(ICB_z, CBLim);
 
 ICT_z = CT.MM(:,:,selected.iSlice.z);
 ICTn_z = mat2gray(ICT_z, CT.Lim);
-% ICTn_z = CT.MMn(:,:,selected.iSlice.z);
-
-% ICBn_z = mat2gray(ICB_z, CBLim); %normalize
-% ICTn_z = mat2gray(ICT_z, data_main.CT.Lim);
 
 III_z(:,:,1) = ICTn_z;
 III_z(:,:,2) = ICBn_z;
@@ -45,13 +50,6 @@ set(hPlotObj.CT(1), 'visible', 'on');
 
 set(hPlotObj.CT(1), 'userdata', [0 1 0 1]);
 set(hAxis.CT(1), 'clim', [0 1]);
-
-
-% II{1} = ICTn_z;
-% II{2} = ICBn_z;
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 IIO(1).CTn = ICTn_z;
 IIO(1).CBn = ICBn_z;
 
@@ -61,8 +59,8 @@ IIO(1).CBn = ICBn_z;
 % set(hPushbutton.showTumor, 'visible', 'off')
 
 %Sagittal
-ICB_x = rot90(squeeze(CB.MMI(:, selected.iSlice.x, :, selected.idxDate)));
-ICBn_x = mat2gray(ICB_x, [double(CB.minI(selected.idxDate)) double(CB.maxI(selected.idxDate))]);
+ICB_x(P-ind2(1)+1:P-ind1(1)+1, ind1(2):ind2(2)) = rot90(squeeze(MMI(:,selected.iSlice.x-ind1(3)+1, :)));
+ICBn_x = mat2gray(ICB_x, CBLim);
 
 ICT_x = rot90(squeeze(CT.MM(:, selected.iSlice.x, :)));
 ICTn_x = mat2gray(ICT_x, data_main.CT.Lim);
@@ -78,8 +76,8 @@ IIO(2).CTn = ICTn_x;
 IIO(2).CBn = ICBn_x;
 
 %Coronal
-ICB_y = rot90(squeeze(CB.MMI(selected.iSlice.y, :, :, selected.idxDate)));
-ICBn_y = mat2gray(ICB_y, [double(CB.minI(selected.idxDate)) double(CB.maxI(selected.idxDate))]);
+ICB_y(P-ind2(1)+1:P-ind1(1)+1, ind1(3):ind2(3)) = rot90(squeeze(MMI(selected.iSlice.y-ind1(2)+1, :, :)));
+ICBn_y = mat2gray(ICB_y, CBLim);
 
 ICT_y = rot90(squeeze(CT.MM(selected.iSlice.y, :, :)));
 ICTn_y = mat2gray(ICT_y, data_main.CT.Lim);

@@ -5,11 +5,7 @@ CT = data_main.CT;
 hPlotObj = data_main.hPlotObj;
 selected = data_main.selected;
 SS = data_main.SS;
-
-SS_SagCor = [];
-if data_main.flag.SS_SagCorLoaded
-    SS_SagCor = data_main.SS_SagCor;
-end
+SS_SagCor = data_main.SS_SagCor;
 
 switch panelTag
     case '1'
@@ -35,30 +31,26 @@ switch panelTag
         end
         
     case '2'  % x cut
-        if ~isempty(SS_SagCor)
-            if isempty(SS_SagCor(selected.idxSS).sag(iSlice).pt)
-                set(hPlotObj.SS.x, 'xdata', [], 'ydata', []);    
-            else
-                ptmm = [];
-                for iB = 1:length(SS_SagCor(selected.idxSS).sag(iSlice).pt)
-                    pt = SS_SagCor(selected.idxSS).sag(iSlice).pt{iB};
-                    ptmm = [ptmm;pt];
-                end
-                set(hPlotObj.SS.x, 'xdata', ptmm(:,2), 'ydata', ptmm(:,1), 'color', SS.contourColor{selected.idxSS}/255);
+        if isempty(SS_SagCor(selected.idxSS).sag(iSlice).pt)
+            set(hPlotObj.SS.x, 'xdata', [], 'ydata', []);    
+        else
+            ptmm = [];
+            for iB = 1:length(SS_SagCor(selected.idxSS).sag(iSlice).pt)
+                pt = SS_SagCor(selected.idxSS).sag(iSlice).pt{iB};
+                ptmm = [ptmm;pt];
             end
+            set(hPlotObj.SS.x, 'xdata', ptmm(:,2), 'ydata', ptmm(:,1), 'color', SS.contourColor{selected.idxSS}/255);
         end
         
     case '3' % y cut
-        if ~isempty(SS_SagCor)
-            if isempty(SS_SagCor(selected.idxSS).cor(iSlice).pt)
-                set(hPlotObj.SS.y, 'xdata', [], 'ydata', []);    
-            else
-                ptmm = [];
-                for iB = 1:length(SS_SagCor(selected.idxSS).cor(iSlice).pt)
-                    pt = SS_SagCor(selected.idxSS).cor(iSlice).pt{iB};
-                    ptmm = [ptmm;pt];
-                end
-                set(hPlotObj.SS.y, 'xdata', ptmm(:,2), 'ydata', ptmm(:,1), 'color', SS.contourColor{selected.idxSS}/255);
+        if isempty(SS_SagCor(selected.idxSS).cor(iSlice).pt)
+            set(hPlotObj.SS.y, 'xdata', [], 'ydata', []);    
+        else
+            ptmm = [];
+            for iB = 1:length(SS_SagCor(selected.idxSS).cor(iSlice).pt)
+                pt = SS_SagCor(selected.idxSS).cor(iSlice).pt{iB};
+                ptmm = [ptmm;pt];
             end
+            set(hPlotObj.SS.y, 'xdata', ptmm(:,2), 'ydata', ptmm(:,1), 'color', SS.contourColor{selected.idxSS}/255);
         end
 end

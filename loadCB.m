@@ -1,19 +1,21 @@
-function [CB] = loadCB(hFig_main)
+function [CBinfo, CB] = loadCB(hFig_main)
 
 data_main = guidata(hFig_main);
 ffd = fullfile(data_main.fd_data, data_main.RadoncIDFolder);
-ffn_CB = fullfile(ffd, [data_main.RadoncID, '_allCB.mat']);
+ffn_CBinfo = fullfile(ffd, [data_main.RadoncID, '_CBinfo.mat']);
+load (ffn_CBinfo)
 
 set(hFig_main, 'pointer', 'watch')
 drawnow;
 
-load (ffn_CB)
-
+for n = 1:length(CBinfo)
+    ffn_CB = fullfile(ffd, [data_main.RadoncID, '_CB_', CBinfo(n).date, '_interp.mat']);
+    load(ffn_CB)
+    CB(n).MMI = MMI_CB;
+    CB(n).ind1 = ind1;
+    CB(n).ind2 = ind2;  
+    
+    CB(n).Lim = double([min(CB(n).MMI(:)) max(CB(n).MMI(:))]); 
+        
+end
 set(hFig_main, 'pointer', 'arrow')
-CB.nCB = size(CB.dateCreated, 1);
-CB.Lim = [min(CB.minI) max(CB.maxI)]; 
-CB.Lim = double(CB.Lim);
-
-% for n = 1:size(CB.MMI, 4)
-%     CB.MMIn(:,:,:,n) = mat2gray(CB.MMI(:,:,:,n), [double(CB.minI(n)) double(CB.maxI(n))]);
-% end

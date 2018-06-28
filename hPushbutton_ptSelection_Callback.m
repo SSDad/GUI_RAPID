@@ -6,7 +6,7 @@ RadoncIDFolder = data_main.RadoncIDfromTable;
 
 %% initialize
 % main figure
-set(hFig_main, 'Name', ['RAPID_3 - ', RadoncIDFolder]);
+set(hFig_main, 'Name', ['RAPID_4 - ', RadoncIDFolder]);
 set(hFig_main, 'WindowScrollWheelFcn', @mscb);
 data_main.RadoncIDFolder = RadoncIDFolder;
 
@@ -62,12 +62,8 @@ set(data_main.hText.CTcm, 'String', [])
 
 % structure set
 set(data_main.hPlotObj.SS.z, 'xdata', (nan), 'ydata', (nan));    
-set(data_main.hPlotObj.SS.x, 'xdata', (nan), 'ydata', (nan));    
-set(data_main.hPlotObj.SS.y, 'xdata', (nan), 'ydata', (nan));    
 set(data_main.hMenuItem.bar, 'Checked', 'off', 'Enable', 'off');
-set(data_main.hMenuItem.SS, 'Checked', 'off', 'Enable', 'off');
 data_main.flag.SSLoaded = false;
-data_main.flag.SS_SagCorLoaded = false;
 
 %iso
 set(data_main.hPlotObj.iso.z, 'xdata', (nan), 'ydata', (nan));    

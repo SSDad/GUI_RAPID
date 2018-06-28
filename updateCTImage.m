@@ -10,25 +10,49 @@ end
 hAxis = data_main.hAxis;
 selected = data_main.selected;
 
+CTonly = false;
+CBonly = false;
 overlay = false;
 
 if strcmp(get(data_main.hMenuItem.CT, 'Checked'), 'on')
+    CTonly = true;
     MM = CT.MM;
 elseif strcmp(get(data_main.hMenuItem.CB, 'Checked'), 'on')
-    MM = CB.MMI(:, :, :, data_main.selected.idxDate);
+    iDate = selected.idxDate;
+    CBonly = true;
+    MMI = CB(iDate).MMI(:, :, :);
+    ind1 = CB(iDate).ind1;
+    ind2 = CB(iDate).ind2;
 elseif strcmp(get(data_main.hMenuItem.CTCB, 'Checked'), 'on')
+    iDate = selected.idxDate;
     overlay = true;
     MM = CT.MM;
-    MMI = CB.MMI(:, :, :, data_main.selected.idxDate);
-    CBLim = [double(CB.minI(selected.idxDate)) double(CB.maxI(selected.idxDate))];
+    MMI = CB(iDate).MMI(:, :, :);
+    ind1 = CB(iDate).ind1;
+    ind2 = CB(iDate).ind2;
+    CBLim = CB(iDate).Lim;
 end
 
+[M, N, P] = size(CT.MM);
 switch panelTag
     case '1'
-        if overlay
-            ICB_z = MMI(:,:,iSlice);
-            ICBn_z = mat2gray(ICB_z, CBLim);
-            
+        if CTonly
+            I = MM(:, :, iSlice);
+            set(hPlotObj.CT(1), 'CData', I); 
+        elseif CBonly
+            I = zeros(M, N);
+            if ind1(1) <= iSlice && iSlice <= ind2(1)
+                I(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,iSlice-ind1(1)+1);
+            end
+            set(hPlotObj.CT(1), 'CData', I); 
+        elseif overlay
+            ICB_z = zeros(M, N);
+            ICBn_z = zeros(M, N);
+
+            if ind1(1) <= iSlice && iSlice <= ind2(1)
+                ICB_z(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,iSlice-ind1(1)+1);
+                ICBn_z = mat2gray(ICB_z, CBLim);
+            end
             ICT_z = MM(:,:,iSlice);
             ICTn_z = mat2gray(ICT_z, CT.Lim);
 
@@ -37,22 +61,33 @@ switch panelTag
             III_z(:,:,1) = mat2gray(ICTn_z, CLimAll(1:2));
             III_z(:,:,2) = mat2gray(ICBn_z, CLimAll(3:4));
             III_z(:,:,3) = III_z(:,:,1);
-            set(hPlotObj.CT(1), 'CData', III_z); 
-        else
-            I = MM(:, :, iSlice);
-            set(hPlotObj.CT(1), 'CData', I); 
+            set(hPlotObj.CT(1), 'CData', III_z);
         end
 
-        iz = size(MM, 3) - iSlice +1;
+        iz = P - iSlice +1;
         set(hPlotObj.CrossLine.z,  'YData', [CT.zz(iz), CT.zz(iz)]);
 
         set(hText.CT(1), 'String', ['Axial slice: ', num2str(iSlice-1)])
         set(hText.CTcm(1), 'String', ['Y: ', num2str((CT.zz(iSlice)-0)/10, '%5.2f'), ' cm'])
 
     case '2'
-        if overlay
-            ICB_x = rot90(squeeze(MMI(:, iSlice, :)));
-            ICBn_x = mat2gray(ICB_x, CBLim);
+        if CTonly
+            I = rot90(squeeze(MM(:, iSlice, :)));
+            set(hPlotObj.CT(2), 'CData', I); 
+        elseif CBonly
+            I = zeros(P, M);
+            if ind1(3) <= iSlice && iSlice <= ind2(3)
+                I(P-ind2(1)+1:P-ind1(1)+1, ind1(2):ind2(2)) = rot90(squeeze(MMI(:, iSlice-ind1(3)+1, :)));
+            end
+            set(hPlotObj.CT(2), 'CData', I); 
+        elseif overlay
+            ICB_x = zeros(P, M);
+            ICBn_x = zeros(P, M);
+            
+            if ind1(3) <= iSlice && iSlice <= ind2(3)
+                ICB_x(P-ind2(1)+1:P-ind1(1)+1, ind1(2):ind2(2)) = rot90(squeeze(MMI(:, iSlice-ind1(3)+1, :)));
+                ICBn_x = mat2gray(ICB_x, CBLim);
+            end
             
             ICT_x = rot90(squeeze(MM(:, iSlice, :)));
             ICTn_x = mat2gray(ICT_x, CT.Lim);
@@ -62,9 +97,6 @@ switch panelTag
             III_x(:,:,2) = mat2gray(ICBn_x, CLimAll(3:4));
             III_x(:,:,3) = III_x(:,:,1);
             set(hPlotObj.CT(2), 'CData', III_x); 
-        else
-            I = rot90(squeeze(MM(:, iSlice, :)));
-            set(hPlotObj.CT(2), 'CData', I); 
         end
 
         ix = iSlice;
@@ -74,10 +106,23 @@ switch panelTag
         set(hText.CTcm(2), 'String', ['X: ', num2str((CT.xx(iSlice)-0)/10, '%5.2f'), ' cm'])
     
     case '3'
-        if overlay
-            ICB_y = rot90(squeeze(MMI(iSlice, :, :)));
-            ICBn_y = mat2gray(ICB_y, CBLim);
-            
+        if CTonly
+            I = rot90(squeeze(MM(iSlice, :, :)));
+            set(hPlotObj.CT(3), 'CData', I); 
+        elseif CBonly
+            I = zeros(P, N);
+            if ind1(2) <= iSlice && iSlice <= ind2(2)
+                I(P-ind2(1)+1:P-ind1(1)+1, ind1(3):ind2(3)) = rot90(squeeze(MMI(iSlice-ind1(2)+1, :, :)));
+            end
+            set(hPlotObj.CT(3), 'CData', I); 
+        elseif overlay
+            ICB_y = zeros(P, N);
+            ICBn_y = zeros(P, N);
+
+            if ind1(2) <= iSlice && iSlice <= ind2(2)
+                ICB_y(P-ind2(1)+1:P-ind1(1)+1, ind1(3):ind2(3)) = rot90(squeeze(MMI(iSlice-ind1(2)+1, :, :)));
+                ICBn_y = mat2gray(ICB_y, CBLim);
+            end
             
             ICT_y = rot90(squeeze(MM(iSlice, :, :)));
             ICTn_y = mat2gray(ICT_y, CT.Lim);
@@ -88,9 +133,6 @@ switch panelTag
             III_y(:,:,2) = mat2gray(ICBn_y, CLimAll(3:4));
             III_y(:,:,3) = III_y(:,:,1);
             set(hPlotObj.CT(3), 'CData', III_y); 
-        else
-            I = rot90(squeeze(MM(iSlice, :, :)));
-            set(hPlotObj.CT(3), 'CData', I); 
         end
 
         iy = iSlice;
@@ -106,17 +148,26 @@ if overlay
     hCC(1) = hAxis.contrast1;
     hCC(2) = hAxis.contrast2;
 
-    jCB = MMI(:,:,selected.iSlice.z);
+    jCB = zeros(M, N);
+    if ind1(1) <= selected.iSlice.z && selected.iSlice.z <= ind2(1)
+        jCB(ind1(2):ind2(2), ind1(3):ind2(3)) = MMI(:,:,selected.iSlice.z-ind1(1)+1);
+    end
     jCT = MM(:,:,selected.iSlice.z);
     IIO(1).CBn = mat2gray(jCB, CBLim);
     IIO(1).CTn = mat2gray(jCT, CT.Lim);
-    
-     jCB = rot90(squeeze(MMI(:, selected.iSlice.x, :)));
+
+    jCB = zeros(P, M);
+    if ind1(3) <= selected.iSlice.x && selected.iSlice.x <= ind2(3)
+        jCB(P-ind2(1)+1:P-ind1(1)+1, ind1(2):ind2(2)) = rot90(squeeze(MMI(:, selected.iSlice.x-ind1(3)+1, :)));
+    end
      jCT = rot90(squeeze(MM(:, selected.iSlice.x, :)));
      IIO(2).CBn = mat2gray(jCB, CBLim);
      IIO(2).CTn = mat2gray(jCT, CT.Lim);
 
-     jCB = rot90(squeeze(MMI(selected.iSlice.y, :, :)));
+     jCB = zeros(P, N);
+     if ind1(2) <= selected.iSlice.y && selected.iSlice.y <= ind2(2)
+         jCB(P-ind2(1)+1:P-ind1(1)+1, ind1(3):ind2(3)) = rot90(squeeze(MMI(selected.iSlice.y-ind1(2)+1, :, :)));
+     end
      jCT = rot90(squeeze(MM(selected.iSlice.y, :, :)));
      IIO(3).CBn = mat2gray(jCB, CBLim);
      IIO(3).CTn = mat2gray(jCT, CT.Lim);
