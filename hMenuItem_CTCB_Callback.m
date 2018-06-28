@@ -115,4 +115,3 @@ set(data_main.hMenuItem.CTCB, 'Checked', 'on');
 if data_main.flag.SSLoaded
     set(data_main.hMenuItem.AnalysisZ, 'Enable', 'on');
 end
-updatePDF(data_main);

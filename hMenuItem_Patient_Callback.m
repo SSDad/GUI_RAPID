@@ -6,7 +6,8 @@ function hMenuItem_Patient_Callback(src, evnt)
     
     if isempty(get(data_main.hTable.PL, 'Data'))
         if exist(mat_ptFolder, 'file')
-            load(mat_ptFolder)
+            load(mat_ptFolder);
+            fd_data = uigetdir(fileparts(fd_data));
         else
             fd_data = uigetdir();
             if ~exist(fullfile(tempdir, 'RAPID'), 'dir')
@@ -24,19 +25,19 @@ function hMenuItem_Patient_Callback(src, evnt)
                     ptNo{m} = fn(n).name;
                 end
             end
-        end
-        set(data_main.hTable.PL, 'Data', ptNo'); 
-        set(data_main.hPanel.PL, 'visible', 'on');
-        set(data_main.hMenuItem.Patient, 'checked', 'on');
-        
-        jScroll = findjobj(data_main.hTable.PL);
-        jTable = jScroll.getViewport.getView;
-        jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
-        
-        data_main.fd_data = fd_data;
-        guidata(hFig_main, data_main);
+            set(data_main.hTable.PL, 'Data', ptNo'); 
+            set(data_main.hPanel.PL, 'visible', 'on');
+            set(data_main.hMenuItem.Patient, 'checked', 'on');
 
-        set(hFig_main, 'WindowScrollWheelFcn', []);
+            jScroll = findjobj(data_main.hTable.PL);
+            jTable = jScroll.getViewport.getView;
+            jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+
+            data_main.fd_data = fd_data;
+            guidata(hFig_main, data_main);
+
+            set(hFig_main, 'WindowScrollWheelFcn', []);
+        end
     else
         if strcmp(get(data_main.hMenuItem.Patient, 'checked'), 'on')
             set(data_main.hMenuItem.Patient, 'checked', 'off');

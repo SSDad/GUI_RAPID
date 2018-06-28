@@ -3,7 +3,7 @@ function showContrast_MV(hFig, hI, hC, I, Lim)
     global pt1
     
     % hist
-    y = histcounts(I, max(I(:))+1);
+    y = histcounts(I, floor(max(I(:)))+1);
     x = 1:length(y);
     
 %     y_thresh = sqrt(y*y'/length(y));

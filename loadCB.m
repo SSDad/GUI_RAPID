@@ -5,6 +5,32 @@ ffd = fullfile(data_main.fd_data, data_main.RadoncIDFolder);
 ffn_CBinfo = fullfile(ffd, [data_main.RadoncID, '_CBinfo.mat']);
 load (ffn_CBinfo)
 
+%%%%%%%%%%%%%%%%%%%%
+%remove duplicate
+c = {CBinfo.date}';
+[~, ind] = unique(c);  % same hour
+CBinfo = CBinfo(ind);
+
+cc = {CBinfo.date}';
+nn = 0;
+ind_remove = [];
+for n = 1:length(cc)-1
+    d1 = cc{n};
+    d2 = cc{n+1};
+    if strcmp(d1(1:8), d2(1:8))
+        h1 = str2num(d1(end-1:end));
+        h2 = str2num(d2(end-1:end));
+        
+        if abs(h2-h1) == 1
+            nn = nn+1;
+            ind_remove(nn) = n+1;
+        end
+    end
+end
+CBinfo(ind_remove) = [];
+
+%%%%%%%%%%%%%%%%%%%%
+
 set(hFig_main, 'pointer', 'watch')
 drawnow;
 

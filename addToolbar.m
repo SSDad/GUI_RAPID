@@ -8,6 +8,7 @@ uitoolfactory(hToolbar,'Exploration.ZoomIn');
 uitoolfactory(hToolbar,'Exploration.ZoomOut');
 uitoolfactory(hToolbar,'Exploration.Pan');                
 uitoolfactory(hToolbar,'Exploration.DataCursor');                
+uitoolfactory(hToolbar, 'Exploration.Rotate');
 
 % custom
 [iconRoot, iconRootMATLAB] = ipticondir;  % Get roots for where to find icons

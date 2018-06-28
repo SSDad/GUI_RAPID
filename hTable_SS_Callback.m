@@ -26,8 +26,11 @@ if ~isempty(idcs)
         updateSS(hFig_main, '2', selected.iSlice.x);
         updateSS(hFig_main, '3', selected.iSlice.y);
         
-        updatePDF(data_main);
         if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
-            updateStat(data_main);
+            data_main = guidata(hFig_main);
+            updatePDF_zTime(data_main);
+            updateStat_zTime2d(data_main);
+%             initializeStat_zTime3d(data_main);
+            updateStat_zTime3d(data_main);
         end
 end

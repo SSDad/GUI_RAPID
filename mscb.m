@@ -33,13 +33,15 @@ if isfield(data_main.selected, 'Panel')
 %             updateSS(hFig_main, '1', data_main.selected.iSlice.z)
         end
         
-        if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
-            updatePDF(data_main);
-            updateStat(data_main);
-        end
-        
         data_main.selected = selected;
         guidata(hFig_main, data_main)
+
+        if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
+            updatePDF_zTime(data_main);
+            updateStat_zTime2d(data_main);
+            updateStat_zTime3d(data_main);
+        end
+        
     end
 end
 end

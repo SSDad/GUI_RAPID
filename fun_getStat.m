@@ -129,11 +129,12 @@ for iC = 1:length(ind_com)
 
             % hist correlation coeff.
 %             if strcmp(CB.machineName{1}, CB.machineName{iCB})
-            if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
+
+%             if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
                 num_CB = histcounts(VCB, edgeCB);
-            else
-                num_CB = histcounts(VCB, nBin);
-            end
+%             else
+%                 num_CB = histcounts(VCB, nBin);
+%             end
             pdf_CB(iCB, :) = num_CB/sum(num_CB);
 
             junk1 = corrcoef(pdf_CB(1, :), pdf_CB(iCB, :));
@@ -155,13 +156,13 @@ for iC = 1:length(ind_com)
                 IC_CB1_abs2sum = sum(junk2(:))/numel(junk2);
             end
             
-            if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
+%             if strcmp(CBinfo(1).dcmInfo.StationName, CBinfo(iCB).dcmInfo.StationName)
                 IC_CB_norm = ICB/max(IC_CB(:));
                 CBCB.nmse(iSlice, iCB) = immse(IC_CB_norm, IC_CB1_abs)/IC_CB1_abs2sum;
-            else                
-                IC_CB_norm = ICB/max(ICB(:));
-                CBCB.nmse(iSlice, iCB) = immse(IC_CB_norm, IC_CB1_norm)/IC_CB1_norm2sum;
-            end
+%             else                
+%                 IC_CB_norm = ICB/max(ICB(:));
+%                 CBCB.nmse(iSlice, iCB) = immse(IC_CB_norm, IC_CB1_norm)/IC_CB1_norm2sum;
+%             end
             
             % area and morph change
             if iSlice == CT.idx_iso

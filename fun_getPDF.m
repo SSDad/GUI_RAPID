@@ -139,15 +139,15 @@ if any(I_CB(:))
         VCB = IC_CB(BW);
         VCB = double(VCB);
 
-        if strcmp(subImg.machineName1, subImg.machineName{iSub})
+%         if strcmp(subImg.machineName1, subImg.machineName{iSub}) % from same machine, use abs
             numCB = histcounts(VCB, edgeCB);
             subPDF.CB1.y = yy1_abs;
             subPDF.CB1.x = xx1_abs;
-        else
-            numCB = histcounts(VCB, nBin);
-            subPDF.CB1.y = yy1_norm;
-            subPDF.CB1.x = xx1_norm;
-        end
+%         else % from different machines, use norm
+%             numCB = histcounts(VCB, nBin);
+%             subPDF.CB1.y = yy1_norm;
+%             subPDF.CB1.x = xx1_norm;
+%         end
         yy = numCB/sum(numCB); yy(1) = 0;
         xx = (1:length(yy))/length(yy);
 

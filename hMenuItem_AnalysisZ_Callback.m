@@ -7,23 +7,27 @@ selected = data_main.selected;
 if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     set(data_main.hMenuItem.AnalysisZ, 'checked', 'on');
 
-    % pdf
-    set(data_main.hPanel.pdf_z, 'visible', 'on');
-    set(data_main.hPanel.Stat_z, 'visible', 'on');
-    
     % stat
-    updateStat(data_main);
-        
+    updatePDF_zTime(data_main);
+    updateStat_zTime2d(data_main);
+    initializeStat_zTime3d(data_main);
+    updateStat_zTime3d(data_main);
+    
+    % turn on pdf and Stat panels
+     set(data_main.hPanel.pdf_zTime, 'visible', 'on');
+     set(data_main.hPanel.Stat_zTime, 'visible', 'on');
+ %   set(data_main.hPanel.Stat_z, 'visible', 'on');
+    
     % view panel position
-    set(data_main.hPanel.CT(3), 'Position',  [0.6 0    0.4  1/3]);
-    set(data_main.hPanel.CT(2), 'Position',  [0.6 1/3 0.4 1/3]);
-    set(data_main.hPanel.CT(1), 'Position',  [0.6 2/3 0.4 1/3]);
+    set(data_main.hPanel.CT(1), 'Position',  [0    0 1/3 0.5]);
+    set(data_main.hPanel.CT(2), 'Position',  [1/3 0 1/3 0.5]);
+    set(data_main.hPanel.CT(3), 'Position',  [2/3 0 1/3 0.5]);
     
 else
     set(data_main.hMenuItem.AnalysisZ, 'checked', 'off');
 
-    set(data_main.hPanel.pdf_z, 'visible', 'off');
-    set(data_main.hPanel.Stat_z, 'visible', 'off');
+    set(data_main.hPanel.pdf_zTime, 'visible', 'off');
+    set(data_main.hPanel.Stat_zTime, 'visible', 'off');
 
     set(data_main.hPanel.CT(1), 'Position',  [0 0 0.6 1]);
     set(data_main.hPanel.CT(2), 'Position',  [0.6 0.5 0.4 0.5]);

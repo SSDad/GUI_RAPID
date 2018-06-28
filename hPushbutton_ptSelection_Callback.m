@@ -6,7 +6,7 @@ RadoncIDFolder = data_main.RadoncIDfromTable;
 
 %% initialize
 % main figure
-set(hFig_main, 'Name', ['RAPID_3 - ', RadoncIDFolder]);
+% set(hFig_main, 'Name', ['RAPID_6 - ', RadoncIDFolder]);
 set(hFig_main, 'WindowScrollWheelFcn', @mscb);
 data_main.RadoncIDFolder = RadoncIDFolder;
 
@@ -79,10 +79,10 @@ set(data_main.hMenuItem.CBInfo, 'Enable', 'off', 'Checked', 'off')
 
 % analysisZ
 set(data_main.hMenuItem.AnalysisZ, 'Enable', 'off', 'Checked', 'off')
-set(data_main.hPanel.pdf_z, 'visible', 'off');
-set(data_main.hPanel.Stat_z, 'visible', 'off');
+set(data_main.hPanel.pdf_zTime, 'visible', 'off');
+set(data_main.hPanel.Stat_zTime, 'visible', 'off');
 
-data_main.flag.statData = false(100, 1);
+data_main.flag.statData_z = false(100, 1);
 
 set(data_main.hPanel.CT(1), 'Position',  [0 0 0.6 1]);
 set(data_main.hPanel.CT(2), 'Position',  [0.6 0.5 0.4 0.5]);
