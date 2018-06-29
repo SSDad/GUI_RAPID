@@ -10,21 +10,7 @@ uitoolfactory(hToolbar,'Exploration.Pan');
 uitoolfactory(hToolbar,'Exploration.DataCursor');                
 uitoolfactory(hToolbar, 'Exploration.Rotate');
 
-% custom
-[iconRoot, iconRootMATLAB] = ipticondir;  % Get roots for where to find icons
-
-% Common properties for several push tools
-t = [];
-t.toolConstructor            = @uipushtool;
-t.properties.Parent          = hToolbar;
-t.properties.Interruptible   = 'off';    % Make buttons busy, cancel
-t.properties.BusyAction      = 'cancel'; % any repeated click events.
-
-% distance tool toolbar button
-t.iconConstructor            = @makeToolbarIconFromGIF;
-t.iconRoot                   = iconRoot;
-t.icon                       = 'distance_tool.gif';
-t.properties.TooltipString   = getString(message('images:imtoolUIString:measureDistanceTooltipString'));
-t.properties.Tag             = 'distance tool toolbar button';
-% t.properties.ClickedCallback = @distanceToolButton_ClickedCallback;
-% distanceTool = makeToolbarItem(t);
+tb_distance = uipushtool(hToolbar, 'TooltipString', 'Measure Distance', 'ClickedCallback', @hToolbarItem_Distance_Callback);
+[img,map] = imread('tool_double_arrow.gif');
+icon = ind2rgb(img,map);
+tb_distance.CData = icon;

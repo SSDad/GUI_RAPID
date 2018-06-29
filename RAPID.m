@@ -1,4 +1,4 @@
-function varargout = RAPID_6(varargin)
+function varargout = RAPID(varargin)
 %%%%%%%%%%%%%%%%%%%%%%%%%
 % RAPID GUI redesign v5
 % v2 - 3-cut view
