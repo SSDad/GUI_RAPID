@@ -75,9 +75,18 @@ hTable = data_main.hTable;
 hMenuItem = data_main.hMenuItem;
 
 CBDate = cell(length(CBinfo), 1);
-for iDate = 1:size(CBDate, 1)
-    CBDate{iDate} = CBinfo(iDate).date;
-end
+if isfield(CBinfo, 'plan')   
+    for iDate = 1:size(CBDate, 1)
+        CBDate{iDate} = ['<html><font color = white>' CBinfo(iDate).date '</font></html>'];
+        if strcmp(CBinfo(iDate).plan, 'r')
+            CBDate{iDate} = ['<html><font color = red>' CBinfo(iDate).date '</font></html>'];
+        end
+    end
+else
+    for iDate = 1:size(CBDate, 1)
+        CBDate{iDate} = CBinfo(iDate).date;
+    end
+end    
 set(hTable.CBDate, 'Data', CBDate);
 set(hPanel.CBDate, 'Visible', 'on');
 set(hMenuItem.CBDate, 'Enable', 'on', 'Checked', 'on');
