@@ -83,5 +83,6 @@ updateSS(hFig_main, '3', data_main.selected.iSlice.y);
 %% Analysis
 if data_main.flag.CBLoaded
     set(data_main.hMenuItem.AnalysisZ, 'Enable', 'on');
+    set(data_main.hMenuItem.AnalysisZ_CBCT, 'Enable', 'on');
 end
 % updatePDF(data_main);
