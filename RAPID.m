@@ -9,6 +9,7 @@ function varargout = RAPID(varargin)
 %     - ruler
 % v6a- iri2i CB date color
 % v6_CB2CT 
+% v6_mrn search
 %
 % Zhen Ji
 % April 2018 
@@ -40,5 +41,6 @@ data_main.hPlotObj = hPlotObj;
 data_main.hText = hText;
 data_main.Param = Param;
 data_main.hFig_main = hFig_main;
+data_main.editBoxText_pt = [];
 
 guidata(hFig_main, data_main);

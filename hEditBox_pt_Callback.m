@@ -1,0 +1,26 @@
+function hEditBox_pt_Callback(src, evnt)
+
+hFig_main = ancestor(src, 'Figure');
+data_main = guidata(hFig_main);
+
+if strcmp(evnt.Key, 'backspace')
+    data_main.editBoxText_pt = data_main.editBoxText_pt(1:end-1);
+else
+    data_main.editBoxText_pt = [data_main.editBoxText_pt evnt.Character];
+end
+
+guidata(hFig_main, data_main);
+
+% sort
+fn = dir(data_main.fd_data);
+fn = fn(~ismember({fn.name},{'.','..'}));
+m = 0;
+ptNo = [];
+for n = 1:length(fn)
+        if contains(fn(n).name, data_main.editBoxText_pt)
+            m = m+1;
+            ptNo{m} = fn(n).name;
+        end
+end
+
+set(data_main.hTable.PL, 'Data', ptNo');
