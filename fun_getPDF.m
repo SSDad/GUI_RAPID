@@ -117,9 +117,7 @@ if any(I_CB(:))
     VCB = IC_CB(BW);
     VCB = double(VCB);
 
-    [xx1, yy1, edgeCB1] = getHist(VCB, nBin);
-    subPDF.CB1.y = yy1;
-    subPDF.CB1.x = xx1;
+    [subPDF.CB1.x, subPDF.CB1.y, edgeCB1] = getHist(VCB, nBin);
    
     % CB
     for iSub = 1:nSub
@@ -127,21 +125,21 @@ if any(I_CB(:))
         VCB = IC_CB(BW);
         VCB = double(VCB);
         
-        % CBCB1
-        numCB = histcounts(VCB, edgeCB1);
-        yy = numCB/sum(numCB); 
-        yy(1) = 0;
-        xx = (1:length(yy))/length(yy);
-        subPDF.CB.y{iSub} = yy;
-        subPDF.CB.x{iSub} = xx;
+        % CB2CB1
+        numCB1 = histcounts(VCB, edgeCB1);
+        yy1 = numCB1/sum(numCB1); 
+        yy1(1) = 0;
+        xx1 = (1:length(yy1))/length(yy1);
+        subPDF.CB.y{iSub} = yy1;
+        subPDF.CB.x{iSub} = xx1;
         
-        %CBCT
-        numCB = histcounts(VCB, edgeCT);
-        yy = numCB/sum(numCB); 
-        yy(1) = 0;
-        xx = (1:length(yy))/length(yy);
-        subPDF.CBCT.y{iSub} = yy;
-        subPDF.CBCT.x{iSub} = xx;
+        %CB2CT
+        numCB2 = histcounts(VCB, edgeCT);
+        yy2 = numCB2/sum(numCB2); 
+        yy2(1) = 0;
+        xx2 = (1:length(yy2))/length(yy2);
+        subPDF.CBCT.y{iSub} = yy2;
+        subPDF.CBCT.x{iSub} = xx2;
      end
 end
 

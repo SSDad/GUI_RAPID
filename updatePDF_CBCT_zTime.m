@@ -26,7 +26,7 @@ if data_main.flag.SSLoaded && data_main.flag.CBLoaded
     %                 plot(iso.x, iso.y, '+y', 'MarkerSize', 50, 'parent', hAxes.sliceSub(iSub))  % iso point
     %             end
 
-            set(hPlotObj.subPDF(iSub).CB, 'XData', subPDF.CB.x{iSub}, 'YData', subPDF.CB.y{iSub});
+            set(hPlotObj.subPDF(iSub).CB, 'XData', subPDF.CBCT.x{iSub}, 'YData', subPDF.CBCT.y{iSub});
             set(hPlotObj.subPDF(iSub).CB1, 'XData', subPDF.CT.x, 'YData', subPDF.CT.y);
         end
 
