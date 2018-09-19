@@ -8,7 +8,12 @@ load (ffn_CBinfo)
 %%%%%%%%%%%%%%%%%%%%
 %remove duplicate
 c = {CBinfo.date}';
-[~, ind] = unique(c, 'stable');  % same hour
+
+if length(c{1}) >= 8
+    [~, ind] = unique(c);  % same hour
+else
+    [~, ind] = unique(c, 'stable');  % same hour
+end
 CBinfo = CBinfo(ind);
 
 cc = {CBinfo.date}';
