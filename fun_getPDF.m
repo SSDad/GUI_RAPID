@@ -1,5 +1,7 @@
 function [subImg, subPDF, iso] = fun_getPDF(CT, CB, CBinfo, SS, selected)
 
+nBin = 100;
+
 %% iso on CT
 dx = CT.xx(2)-CT.xx(1);
 dy = CT.yy(2)-CT.yy(1);
@@ -58,7 +60,7 @@ subImg.CT = IC_CT;
 subImg.contCB.x = xxC;
 subImg.contCB.y = yyC;
 
-% % CB
+%% CB
 [M, N, P] = size(CT.MM);
 I_CB = zeros(M, N);
 iDate = 1;
@@ -101,66 +103,59 @@ if any(I_CB(:))
        
     end
 
-    % stat
-    nBin = 100;
-
+    %% stat
+    %CT
     VCT = IC_CT(BW);
-    
     VCT = double(VCT);
-    numCT = histcounts(VCT, nBin);
-    pdfCT = numCT/sum(numCT);
-
+    
+    [subPDF.CT.x, subPDF.CT.y, edgeCT] = getHist(VCT, nBin);
+    
+    %CB1
     IC_CB = subImg.CB1;
     IC_CB = double(IC_CB);
     
     VCB = IC_CB(BW);
     VCB = double(VCB);
-    
-    minCB = min(VCB);
-    maxCB = max(VCB);
-    if minCB == 0
-        edgeCB = linspace(minCB, maxCB, nBin+2);
-        edgeCB = edgeCB(2:end);
-    else
-        edgeCB = linspace(minCB, maxCB, nBin+1);
-    end
 
-    numCB_abs = histcounts(VCB, edgeCB);
-    numCB_norm = histcounts(VCB, nBin);
-    yy1_abs = numCB_abs/sum(numCB_abs);  yy1_abs(1) = 0;
-    xx1_abs = (1:length(yy1_abs))/length(yy1_abs); 
-    yy1_norm = numCB_norm/sum(numCB_norm);  yy1_norm(1) = 0;
-    xx1_norm = (1:length(yy1_norm))/length(yy1_norm); 
-
-    subPDF.ymax = max(yy1_abs);
-    
+    [subPDF.CB1.x, subPDF.CB1.y, edgeCB1] = getHist(VCB, nBin);
+   
+    % CB
     for iSub = 1:nSub
         IC_CB = subImg.CB(:,:,iSub);
         VCB = IC_CB(BW);
         VCB = double(VCB);
-
-%         if strcmp(subImg.machineName1, subImg.machineName{iSub}) % from same machine, use abs
-            numCB = histcounts(VCB, edgeCB);
-            subPDF.CB1.y = yy1_abs;
-            subPDF.CB1.x = xx1_abs;
-%         else % from different machines, use norm
-%             numCB = histcounts(VCB, nBin);
-%             subPDF.CB1.y = yy1_norm;
-%             subPDF.CB1.x = xx1_norm;
-%         end
-        yy = numCB/sum(numCB); yy(1) = 0;
-        xx = (1:length(yy))/length(yy);
-
-        subPDF.CB.y{iSub} = yy;
-        subPDF.CB.x{iSub} = xx;
-
-        numCB = histcounts(VCB, edgeCB);
-        yy = numCB/sum(numCB);  yy(1) = 0;
-        xx = (1:length(yy))/length(yy); 
-
-        subPDF.CB.yAbs{iSub} = yy;
-        subPDF.CB.xAbs{iSub} = xx;
+        
+        % CB2CB1
+        numCB1 = histcounts(VCB, edgeCB1);
+        yy1 = numCB1/sum(numCB1); 
+        yy1(1) = 0;
+        xx1 = (1:length(yy1))/length(yy1);
+        subPDF.CB.y{iSub} = yy1;
+        subPDF.CB.x{iSub} = xx1;
+        
+        %CB2CT
+        numCB2 = histcounts(VCB, edgeCT);
+        yy2 = numCB2/sum(numCB2); 
+        yy2(1) = 0;
+        xx2 = (1:length(yy2))/length(yy2);
+        subPDF.CBCT.y{iSub} = yy2;
+        subPDF.CBCT.x{iSub} = xx2;
      end
 end
 
 end
+
+function [xxCT, yyCT, edgeCT] = getHist(VCT, nBin)
+    minCT = min(VCT);
+    maxCT = max(VCT);
+    if minCT == 0  % remove  0 (dark background or padding)
+        edgeCT = linspace(minCT, maxCT, nBin+2);
+        edgeCT = edgeCT(2:end);
+    else
+        edgeCT = linspace(minCT, maxCT, nBin+1);
+    end
+
+    numCT = histcounts(VCT, edgeCT);
+    yyCT = numCT/sum(numCT);
+    yyCT(1) = 0; % remove dark background or padding
+    xxCT = (1:length(yyCT))/length(yyCT); 

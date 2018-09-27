@@ -79,6 +79,7 @@ set(data_main.hMenuItem.CBInfo, 'Enable', 'off', 'Checked', 'off')
 
 % analysisZ
 set(data_main.hMenuItem.AnalysisZ, 'Enable', 'off', 'Checked', 'off')
+set(data_main.hMenuItem.AnalysisZ_CBCT, 'Enable', 'off', 'Checked', 'off')
 set(data_main.hPanel.pdf_zTime, 'visible', 'off');
 set(data_main.hPanel.Stat_zTime, 'visible', 'off');
 

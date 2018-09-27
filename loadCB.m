@@ -8,7 +8,12 @@ load (ffn_CBinfo)
 %%%%%%%%%%%%%%%%%%%%
 %remove duplicate
 c = {CBinfo.date}';
-[~, ind] = unique(c);  % same hour
+
+if length(c{1}) >= 8
+    [~, ind] = unique(c);  % same hour
+else
+    [~, ind] = unique(c, 'stable');  % same hour
+end
 CBinfo = CBinfo(ind);
 
 cc = {CBinfo.date}';
@@ -17,7 +22,7 @@ ind_remove = [];
 for n = 1:length(cc)-1
     d1 = cc{n};
     d2 = cc{n+1};
-    if strcmp(d1(1:8), d2(1:8))
+    if length(d1)>=8 && strcmp(d1(1:8), d2(1:8))
         h1 = str2num(d1(end-1:end));
         h2 = str2num(d2(end-1:end));
         
