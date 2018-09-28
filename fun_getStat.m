@@ -165,9 +165,9 @@ for iC = 1:length(ind_com)
 %             end
             
             % area and morph change
-            if iSlice == CT.idx_iso
+%             if iSlice == CT.idx_iso
                 [CBCB.areaDelta(iSlice, iCB), CBCB.morphDelta(iSlice, iCB)] = fun_getDelta(IC_CB1, ICB, iso);
-            end
+%             end
             
             % FSIM - Feature Similarity
             ICB8 = uint8(ICB / 256);
