@@ -179,7 +179,11 @@ for iC = 1:length(ind_com)
         end
         
     end
+    
+    % normalize
     CBCB.mie(iSlice, :) = CBCB.mie(iSlice, :)/CBCB.mie(iSlice, 1);
+    CBCT.mie(iSlice, :) = CBCT.mie(iSlice, :)/CBCT.mie(iSlice, 1);
+    
     CBCB.fsim(iSlice, :) = CBCB.fsim(iSlice, :)/CBCB.fsim(iSlice, 1);
     
     clear IC_CB;
