@@ -21,6 +21,7 @@ if numel(idcs)
             updateStat_zTime2d(data_main);
         elseif strcmp(data_main.hMenuItem.AnalysisZ_CBCT.Checked, 'on')
             updatePDF_CBCT_zTime(data_main);            
+            updateStat_zTime2d(data_main);
         end
 
         %     end

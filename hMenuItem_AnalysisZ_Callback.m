@@ -11,7 +11,9 @@ if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     % stat
     updatePDF_zTime(data_main);
     updateStat_zTime2d(data_main);
-    initializeStat_zTime3d(data_main);
+    if ~isfield( data_main.hPlotObj, 'stat_zTime3d')
+        initializeStat_zTime3d(data_main);
+    end
     updateStat_zTime3d(data_main);
     
     % turn on pdf and Stat panels

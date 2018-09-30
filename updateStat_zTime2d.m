@@ -15,15 +15,19 @@ if ~data_main.flag.statData_z(selected.idxSS)
     if exist(statFileName, 'file')
         load(statFileName);
     else
-        [CBCB] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
-        save(statFileName, 'CBCB');
+        [CBCB, CBCT] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
+        save(statFileName, 'CBCB', 'CBCT');
     end
      data_main.CBCB(selected.idxSS) = CBCB;
+     data_main.CBCT(selected.idxSS) = CBCT;
      data_main.flag.statData_z(selected.idxSS) = true;
      guidata(hFig_main, data_main);
 end
 
 CBCB = data_main.CBCB(selected.idxSS);
+if strcmp(get(data_main.hMenuItem.AnalysisZ_CBCT, 'checked'), 'on')
+    CBCB = data_main.CBCT(selected.idxSS);
+end
 
 dataColor = data_main.SS.contourColor{selected.idxSS}/255;
 
@@ -36,7 +40,6 @@ for n = date1:date2
 end
 
 fieldName = fields(CBCB);
-
 for iT = 1:length(fieldName)
     fieldVal = getfield(CBCB, fieldName{iT});
     ydata = fieldVal(selected.iSlice.z, :);

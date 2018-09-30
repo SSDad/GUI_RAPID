@@ -5,6 +5,9 @@ data_main = guidata(hFig_main);
 selected = data_main.selected;
 
 CBCB = data_main.CBCB(selected.idxSS);
+if strcmp(get(data_main.hMenuItem.AnalysisZ_CBCT, 'checked'), 'on')
+    CBCB = data_main.CBCT(selected.idxSS);
+end
 
 dataColor = data_main.SS.contourColor{selected.idxSS}/255;
 dColor = 0.3*[1 1 1];
