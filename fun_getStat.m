@@ -86,6 +86,7 @@ for iC = 1:length(ind_com)
     VCT = double(VCT);
     numCT = histcounts(VCT, nBin);
     pdfVCT = numCT/sum(numCT);
+    [mie_CTCT(iSlice), jpdfe, entrp] = fun_mie(pdfVCT, pdfVCT);
 
     BW3d = repmat(BW, 1, 1, nCB);
 
@@ -182,7 +183,7 @@ for iC = 1:length(ind_com)
     
     % normalize
     CBCB.mie(iSlice, :) = CBCB.mie(iSlice, :)/CBCB.mie(iSlice, 1);
-    CBCT.mie(iSlice, :) = CBCT.mie(iSlice, :)/CBCT.mie(iSlice, 1);
+    CBCT.mie(iSlice, :) = CBCT.mie(iSlice, :)/mie_CTCT(iSlice);
     
     CBCB.fsim(iSlice, :) = CBCB.fsim(iSlice, :)/CBCB.fsim(iSlice, 1);
     
