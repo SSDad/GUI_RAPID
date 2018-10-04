@@ -1,0 +1,27 @@
+function [areaDelta, morphDelta] = fun_getDelta(points, ICB, iso)
+
+areaDelta = NaN;
+morphDelta = NaN;
+
+I{1} = IC_CB1;
+I{2} = ICB;
+
+[M, N] = size(ICB);
+% BW = false(M,N);
+
+for n = 1:2
+    [points, A(n)] = fun_tumorSegmentation(I{n}, iso.x, iso.y);
+    if isempty(points)
+        return
+    else
+        BW{n} = poly2mask(points(:,2), points(:,1), M, N);
+    end
+end
+
+areaDelta = (A(1)-A(2))/A(1);
+
+J1 = xor(BW{1}, BW{2});
+J2 = and(BW{1}, BW{2});
+if any(J2(:))
+    morphDelta = bwarea(J1)/bwarea(J2);
+end

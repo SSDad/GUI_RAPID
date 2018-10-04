@@ -29,10 +29,9 @@ elseif strcmp(get(data_main.hMenuItem.CTCB, 'Checked'), 'on')
     overlay = true;
     MM = CT.MM;
     if strcmp(get(data_main.hMenuItem.AnalysisZ, 'checked'), 'on')
-        MM = zeros(M, N, P);
-        i1 = CB(1).ind1;
-        i2 = CB(1).ind2;
-        MM(i1(2):i2(2), i1(3):i2(3), i1(1):i2(1)) = CB(1).MMI(:, :, :);
+        MM = zeros(M, N); 
+        
+        MM = CB(1).MMI(:, :, :);
     end
     MMI = CB(iDate).MMI(:, :, :);
     ind1 = CB(iDate).ind1;

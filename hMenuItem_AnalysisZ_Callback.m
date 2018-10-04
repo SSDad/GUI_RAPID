@@ -8,6 +8,11 @@ if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     set(data_main.hMenuItem.AnalysisZ_CBCT, 'checked', 'off');
     set(data_main.hMenuItem.AnalysisZ, 'checked', 'on');
 
+    % image
+    updateCTImage(hFig_main, '1', selected.iSlice.z);
+    updateCTImage(hFig_main, '2', selected.iSlice.x);
+    updateCTImage(hFig_main, '3', selected.iSlice.y);
+    
     % stat
     updatePDF_zTime(data_main);
     updateStat_zTime2d(data_main);
