@@ -1,4 +1,4 @@
-function [points, A] = fun_tumorSegmentation(I_CB, x0, y0)
+function [points] = fun_tumorSegmentation(I_CB)
 
 points = [];
 A = NaN;
@@ -22,4 +22,3 @@ BD = bwboundaries(BW);
 % end
 
 points = BD{1};
-A = polyarea(points(:,1), points(:,2));

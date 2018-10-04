@@ -128,6 +128,11 @@ set(data_main.hMenuItem.CT, 'Checked', 'on');
 set(data_main.hMenuItem.CB, 'Checked', 'off');
 set(data_main.hMenuItem.CTCB, 'Checked', 'off');
 
+% tumor
+if strcmp(data_main.hMenuItem.tumor.Checked, 'on')
+    updateTumor(hFig_main, '1', data_main.selected.iSlice.z);
+end
+
 % tables off
 % set(data_main.hTable.CBDate, 'Visible', 'off');
 

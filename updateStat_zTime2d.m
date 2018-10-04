@@ -15,11 +15,12 @@ if ~data_main.flag.statData_z(selected.idxSS)
     if exist(statFileName, 'file')
         load(statFileName);
     else
-        [CBCB, CBCT] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
-        save(statFileName, 'CBCB', 'CBCT');
+        [CBCB, CBCT, tumor] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
+        save(statFileName, 'CBCB', 'CBCT', 'tumor');
     end
      data_main.CBCB(selected.idxSS) = CBCB;
      data_main.CBCT(selected.idxSS) = CBCT;
+     data_main.tumor(selected.idxSS) = tumor;
      data_main.flag.statData_z(selected.idxSS) = true;
      guidata(hFig_main, data_main);
 end

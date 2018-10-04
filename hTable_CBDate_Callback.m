@@ -16,6 +16,12 @@ if numel(idcs)
         updateCTImage(hFig_main, '2', selected.iSlice.x);
         updateCTImage(hFig_main, '3', selected.iSlice.y);
         
+        %tumor
+if strcmp(data_main.hMenuItem.tumor.Checked, 'on')
+    updateTumor(hFig_main, '1', data_main.selected.iSlice.z);
+end
+
+        
         if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'on')
             updatePDF_zTime(data_main);
             updateStat_zTime2d(data_main);

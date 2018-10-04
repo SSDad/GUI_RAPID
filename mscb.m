@@ -33,6 +33,10 @@ if isfield(data_main.selected, 'Panel')
 %             updateSS(hFig_main, '1', data_main.selected.iSlice.z)
         end
         
+        if strcmp(data_main.hMenuItem.tumor.Checked, 'on')
+            updateTumor(hFig_main, panelTag, iSlice);
+        end
+        
         data_main.selected = selected;
         guidata(hFig_main, data_main)
 

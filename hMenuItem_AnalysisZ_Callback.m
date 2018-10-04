@@ -19,7 +19,7 @@ if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     % turn on pdf and Stat panels
      set(data_main.hPanel.pdf_zTime, 'visible', 'on');
      set(data_main.hPanel.Stat_zTime, 'visible', 'on');
- %   set(data_main.hPanel.Stat_z, 'visible', 'on');
+     set(data_main.hMenuItem.tumor, 'Enable', 'on');
     
     % view panel position
     set(data_main.hPanel.CT(1), 'Position',  [0    0 1/3 0.5]);

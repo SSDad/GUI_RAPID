@@ -1,4 +1,4 @@
-function [CBCB, CBCT] = fun_getStat(CT, CB, SS, selected, CBinfo)
+function [CBCB, CBCT, tumor] = fun_getStat(CT, CB, SS, selected, CBinfo)
 
 %% dx dy
 [M1, N1, ~] = size(CT.MM);
@@ -14,6 +14,10 @@ contData = cont.data;
 
 nCB = length(CB);
 % stat
+tumor.CB = cell(nCT, nCB);
+tumor.CT = cell(nCT, 1);
+tumor.crop = nan(nCT, 4);
+
 CBCB = struct('nmse', NaN(nCT, nCB), ...
                     'CC',     NaN(nCT, nCB), ...
                     'mie',    NaN(nCT, nCB), ...
@@ -77,7 +81,11 @@ for iC = 1:length(ind_com)
     BW  = poly2mask(xxC,  yyC, M, N);
     
     IC_CT(~BW) = 0; %Image Crop, CT
-    
+
+    % tumor on CT
+    tumor.OffSet(iSlice, :) = [x1 y1];
+    tumor.CT{iSlice} = fun_tumorSegmentation(IC_CT);
+
     % stat
     VCT = IC_CT(BW);
 %     nBinCT = length(unique(VCT));
@@ -170,7 +178,8 @@ for iC = 1:length(ind_com)
             
             % area and morph change
 %             if iSlice == CT.idx_iso
-                [CBCB.areaDelta(iSlice, iCB), CBCB.morphDelta(iSlice, iCB)] = fun_getDelta(IC_CB1, ICB, iso);
+                [tumor.CB{iSlice, iCB}] = fun_tumorSegmentation(ICB);
+                [CBCB.areaDelta(iSlice, iCB), CBCB.morphDelta(iSlice, iCB)] = fun_getDelta(tumor.CB{iSlice, 1}, tumor.CB{iSlice, iCB}, size(ICB, 1), size(ICB, 2));
 %             end
             
             % FSIM - Feature Similarity
@@ -178,7 +187,6 @@ for iC = 1:length(ind_com)
             IC_CB18 = uint8(IC_CB1 / 256);
             CBCB.fsim(iSlice, iCB) = fun_FeatureSIM23(ICB8, IC_CB18);
         end
-        
     end
     
     % normalize

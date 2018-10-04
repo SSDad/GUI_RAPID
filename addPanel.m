@@ -244,6 +244,12 @@ set(hPlotObj.CrossLine.z, 'color', 'cyan', 'visible', 'off')
 set(hPlotObj.CrossLine.x, 'color', 'cyan', 'visible', 'off')
 set(hPlotObj.CrossLine.y, 'color', 'cyan', 'visible', 'off')
 
+% tumor init
+hPlotObj.tumor(1) = line(hAxis.CT(1), 'XData', [], 'YData', [], 'LineStyle', 'none', 'Marker', '.');
+hPlotObj.tumor(2) = line(hAxis.CT(1), 'XData', [], 'YData', [], 'LineStyle', 'none', 'Marker', '.');
+set(hPlotObj.tumor(1), 'color', 'm', 'visible', 'off');
+set(hPlotObj.tumor(2), 'color', 'g', 'visible', 'off');
+
 %% pdf Panel
 hPanel.pdf_zTime = uipanel(  'Parent',             hPanel.View,...
                                    'Title',                'pdf (Axial)',...

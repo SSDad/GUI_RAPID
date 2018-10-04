@@ -111,6 +111,11 @@ set(data_main.hMenuItem.CT, 'Checked', 'off');
 set(data_main.hMenuItem.CB, 'Checked', 'off');
 set(data_main.hMenuItem.CTCB, 'Checked', 'on');
 
+%tumor
+if strcmp(data_main.hMenuItem.tumor.Checked, 'on')
+    updateTumor(hFig_main, '1', data_main.selected.iSlice.z);
+end
+
 %% Analysis
 if data_main.flag.SSLoaded
     set(data_main.hMenuItem.AnalysisZ, 'Enable', 'on');
