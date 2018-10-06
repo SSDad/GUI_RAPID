@@ -14,8 +14,8 @@ if strcmp(data_main.hMenuItem.AnalysisZ_CBCT.Checked, 'off')
     updateCTImage(hFig_main, '3', selected.iSlice.y);
 
     % stat
-    updatePDF_CBCT_zTime(data_main);
     updateStat_zTime2d(data_main);
+    updatePDF_CBCT_zTime(data_main);
     if ~isfield( data_main.hPlotObj, 'stat_zTime3d')
         initializeStat_zTime3d(data_main);
     end

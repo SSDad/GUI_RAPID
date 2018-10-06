@@ -252,7 +252,7 @@ set(hPlotObj.tumor(2), 'color', 'g', 'visible', 'off');
 
 %% pdf Panel
 hPanel.pdf_zTime = uipanel(  'Parent',             hPanel.View,...
-                                   'Title',                'pdf (Axial)',...
+                                   'Title',                'Structure Overlay (Axial)',...
                                              'FontSize',                 12,...
                                              'TitlePosition',           'centertop',...
                                             'Units',                      'normalized', ...
@@ -263,29 +263,34 @@ hPanel.pdf_zTime = uipanel(  'Parent',             hPanel.View,...
                                              'ShadowColor',            'black',...
                                              'Visible',                     'off');
 
-ySub = 0.5;
-hSub = 0.5;
+ySub1 = 1/3;
+ySub2 = 2/3;
+hSub = 1/3;
 nSub = 4;
+wSub = 1/nSub;
 for iSub = 1:nSub
     xSub = (iSub-1)/nSub;
-    wSub = 1/nSub;
-    
+    % image
     hAxis.sliceSub(iSub) = axes(   'parent',    hPanel.pdf_zTime, ...
                                                 'Units',      'normalized', ...
-                                                'Position',   [xSub ySub wSub hSub]);
-                                            
+                                                'Position',   [xSub ySub2 wSub hSub]);
     hPlotObj.sliceSub(iSub) = imshow([], 'parent', hAxis.sliceSub(iSub));
     hPlotObj.isoSub(iSub).z = line((nan), (nan), 'Marker', '+', 'MarkerSize', 50,  'Color','yellow', 'parent', hAxis.sliceSub(iSub));
-
+    
+    % pdf
     hAxis.histSub(iSub) = axes(   'parent',    hPanel.pdf_zTime, ...
                                                 'Units',      'normalized', ...
-                                                'Position',   [xSub 0.05 wSub ySub-0.1]);
-
+                                                'Position',   [xSub ySub1 wSub hSub]);
     set(hAxis.histSub(iSub), 'Color', 'k'); 
     axis(hAxis.histSub(iSub), 'off');
-
     hPlotObj.subPDF(iSub).CB1 = line(hAxis.histSub(iSub), 'XData', [], 'YData', [], 'Color', 'm', 'linewidth', 2);
     hPlotObj.subPDF(iSub).CB = line(hAxis.histSub(iSub), 'XData', [], 'YData', [], 'Color', 'g', 'linewidth', 2);
+
+    % joint histogram
+    hAxis.jhSub(iSub) = axes(   'parent',    hPanel.pdf_zTime, ...
+                                                'Units',      'normalized', ...
+                                                'Position',   [xSub 0 wSub hSub]);
+    hPlotObj.jhSub(iSub) = imshow([], 'parent', hAxis.jhSub(iSub));
 
 end                                         
 

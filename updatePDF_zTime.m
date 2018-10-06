@@ -28,6 +28,9 @@ if data_main.flag.SSLoaded && data_main.flag.CBLoaded
 
             set(hPlotObj.subPDF(iSub).CB, 'XData', subPDF.CB.x{iSub}, 'YData', subPDF.CB.y{iSub});
             set(hPlotObj.subPDF(iSub).CB1, 'XData', subPDF.CB1.x, 'YData', subPDF.CB1.y);
+
+%             jhn = data_main.jhn(selected.idxSS);
+%             set(hPlotObj.jhSub(iSub), 'CData', jhn.CBCB{selected.iSlice.z, selected.idxDate}); 
         end
 
         if nSub < 4
