@@ -18,6 +18,8 @@ if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     data_main = guidata(hFig_main);
     
     updatePDF_zTime(data_main);
+    updateJH_zTime(data_main);
+
     if ~isfield( data_main.hPlotObj, 'stat_zTime3d')
         initializeStat_zTime3d(data_main);
     end

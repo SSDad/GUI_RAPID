@@ -3,6 +3,7 @@ function [M] = fun_calMI(jh)
 % M - mutual information
 % jh - joint histogram, square matrix, size maxV+1 by maxV+1
 
+jh = double(jh);
 jhn = jh/sum(jh(:)); % normalized joint histogram
 khn = sum(jhn,1); 
 ihn = sum(jhn,2);

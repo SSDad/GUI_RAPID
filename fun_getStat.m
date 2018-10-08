@@ -1,4 +1,4 @@
-function [CBCB, CBCT, tumor, jh] = fun_getStat(CT, CB, SS, selected, CBinfo, jhOn)
+function [CBCB, CBCT, tumor, imgC] = fun_getStat(CT, CB, SS, selected, CBinfo, jhOn)
 
 jh = [];
 
@@ -84,6 +84,9 @@ for iC = 1:length(ind_com)
     BW  = poly2mask(xxC,  yyC, M, N);
     IC_CT(~BW) = 0; % ct crop inside structure
 
+    % save slices
+    imgC.CT{iSlice} = IC_CT;
+    
     % convert to uint8 for similarity calculation
     IC_CT8 = uint8(IC_CT / 256);
     
@@ -96,7 +99,7 @@ for iC = 1:length(ind_com)
     
     % daily slice stack cb crop
     for iCB = 1:nCB
-        ICB_z = zeros(M1, N1);
+        ICB_z = uint16(zeros(M1, N1));
         MMI = CB(iCB).MMI;
         ind1 = CB(iCB).ind1;    
         ind2 = CB(iCB).ind2;
@@ -105,6 +108,10 @@ for iC = 1:length(ind_com)
         IC_CB(:,:,iCB) = ICB_z(y1:y2, x1:x2);
     end
     IC_CB(~BW3d) = 0;
+    
+    % save slcies
+    imgC.CB{iSlice} = IC_CB;
+    
     IC_CB = double(IC_CB); % 3d stack
 
     % max intensity for ct and cb stack
@@ -121,8 +128,6 @@ for iC = 1:length(ind_com)
     pdfVCT = numCT/sum(numCT);
     [mie_CTCT(iSlice), jpdfe, entrp] = fun_mie(pdfVCT, pdfVCT);
 
-%     [imgJH] = fun_imgJH(IC_CT, IC_CT, maxV);
-%     [mi_CTCT(iSlice)] = fun_calMI(imgJH);
 %     if jhOn
 %         jh.CTCT{iSlice} = imgJH;
 %     end

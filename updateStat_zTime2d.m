@@ -19,13 +19,13 @@ if ~data_main.flag.statData_z(selected.idxSS)
         if strcmp(data_main.hMenuItem.jhZ.Checked, 'on')
             jhOn = true;
         end        
-        [CBCB, CBCT, tumor, jh] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo, jhOn);
-        save(statFileName, 'CBCB', 'CBCT', 'tumor');
+        [CBCB, CBCT, tumor, imgC] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo, jhOn);
+        save(statFileName, 'CBCB', 'CBCT', 'tumor', 'imgC');
     end
      data_main.CBCB(selected.idxSS) = CBCB;
      data_main.CBCT(selected.idxSS) = CBCT;
      data_main.tumor(selected.idxSS) = tumor;
-%     data_main.jh(selected.idxSS) = jh;
+     data_main.imgC(selected.idxSS) = imgC;
      data_main.flag.statData_z(selected.idxSS) = true;
      guidata(hFig_main, data_main);
 end
