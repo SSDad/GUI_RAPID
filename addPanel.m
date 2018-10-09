@@ -311,7 +311,7 @@ hstatTabGroup = uitabgroup('Parent', hPanel.Stat_zTime);
     
 titleName{1} = 'Mean Square Error';
 titleName{2} = 'Correlation Coefficient';
-titleName{3} = 'Mutual Information';
+titleName{3} = 'Joint pdf Mutual Information';
 titleName{4} = 'Feature Similarity';
 titleName{5} = 'Area Delta';
 titleName{6} = 'Morph Delta';

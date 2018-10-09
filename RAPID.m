@@ -10,7 +10,8 @@ function varargout = RAPID(varargin)
 % v6a- iri2i CB date color
 % v6_CB2CT 
 % v6_mrn search
-%
+% v7 - tumor segmentation
+
 % Zhen Ji
 % April 2018 
 %%%%%%%%%%%%%%%%%%%%%%%%%

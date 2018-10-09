@@ -15,10 +15,13 @@ if strcmp(data_main.hMenuItem.AnalysisZ.Checked, 'off')
     
     % stat
     updateStat_zTime2d(data_main);
-    data_main = guidata(hFig_main);
-    
     updatePDF_zTime(data_main);
-    updateJH_zTime(data_main);
+    
+    if strcmp(data_main.hMenuItem.jhZ, 'on')
+        updateJH_zTime(data_main);
+    else
+        set(data_main.hPlotObj.jhSub, 'CData', [], 'visible', 'on');
+    end
 
     if ~isfield( data_main.hPlotObj, 'stat_zTime3d')
         initializeStat_zTime3d(data_main);

@@ -1,5 +1,7 @@
 function updateJH_zTime(data_main)
 
+if strcmp(data_main.hMenuItem.jhZ.Checked, 'on')
+
 selected = data_main.selected;
 imgC = data_main.imgC(selected.idxSS);
 hPlotObj = data_main.hPlotObj;
@@ -34,8 +36,8 @@ maxV = double(maxV);
         A = A>0;
         if isdiag(single(A))
             
-            line([1 size(A, 2)], [1 size(A, 1)], 'color', 'w', 'linewidth', 1,...
-                'parent', data_main.hAxis.jhSub(iSub));
+%             line([1 size(A, 2)], [1 size(A, 1)], 'color', 'w', 'linewidth', 1,...
+%                 'parent', data_main.hAxis.jhSub(iSub));
         end
         set(hPlotObj.jhSub(iSub), 'CData', A, 'visible', 'on'); 
     end
@@ -46,5 +48,4 @@ maxV = double(maxV);
         end
     end
             
-    
-%        set(hPlotObj.jhSub(iSub), 'CData', jh.CBCB{selected.iSlice.z, selected.idxDate}); 
+end

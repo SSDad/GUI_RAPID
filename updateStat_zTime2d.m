@@ -15,10 +15,6 @@ if ~data_main.flag.statData_z(selected.idxSS)
     if exist(statFileName, 'file')
         load(statFileName);
     else
-        jhOn = false;
-        if strcmp(data_main.hMenuItem.jhZ.Checked, 'on')
-            jhOn = true;
-        end        
         [CBCB, CBCT, tumor, imgC] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo, jhOn);
         save(statFileName, 'CBCB', 'CBCT', 'tumor', 'imgC');
     end
@@ -26,9 +22,14 @@ if ~data_main.flag.statData_z(selected.idxSS)
      data_main.CBCT(selected.idxSS) = CBCT;
      data_main.tumor(selected.idxSS) = tumor;
      data_main.imgC(selected.idxSS) = imgC;
+
      data_main.flag.statData_z(selected.idxSS) = true;
      guidata(hFig_main, data_main);
 end
+
+set(data_main.hMenuItem.jhZ, 'Enable', 'on')
+set(data_main.hMenuItem.miZ, 'Enable', 'on')
+     
 
 CBCB = data_main.CBCB(selected.idxSS);
 if strcmp(get(data_main.hMenuItem.AnalysisZ_CBCT, 'checked'), 'on')

@@ -8,4 +8,5 @@ if strcmp(data_main.hMenuItem.jhZ.Checked, 'off')
     updateJH_zTime(data_main)
 else
     set(data_main.hMenuItem.jhZ, 'checked', 'off');
+    set(data_main.hPlotObj.jhSub, 'CData', [], 'visible', 'off');
 end
