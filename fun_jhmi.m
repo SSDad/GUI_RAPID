@@ -1,0 +1,36 @@
+function [jhmi] = fun_jhmi(imgC)
+
+jhmi.CBCB = NaN(imgC.nCT, imgC.nCB);
+jhmi.CBCT = NaN(imgC.nCT, imgC.nCB);
+
+h = waitbar(0, 'Calculating Joint Histogram MI...');
+
+for iC = 1:length(imgC.sliceIdx)
+    iSlice = imgC.sliceIdx(iC);  % slice
+    IC_CT = imgC.CT{iSlice};
+    IC_CB = imgC.CB{iSlice};
+    maxV = max(max(IC_CT(:)), max(IC_CB(:)));      % max intensity for ct and cb stack
+    maxV = double(maxV);
+
+    [imgJH] = fun_imgJH(IC_CT, IC_CT, maxV);
+    [jhmi.CTCT(iSlice)] = fun_calMI(imgJH);
+
+    for iCB = 1:imgC.nCB
+
+        ICB = IC_CB(:,:,iCB);
+        if any(ICB(:))
+ 
+            [imgJH] = fun_imgJH(IC_CB(:,:,1), IC_CB(:,:,iCB), maxV);
+            [jhmi.CBCB(iSlice, iCB)] = fun_calMI(imgJH);
+            
+            [imgJH] = fun_imgJH(IC_CT, IC_CB(:,:,iCB), maxV);
+            [jhmi.CBCT(iSlice, iCB)] = fun_calMI(imgJH);
+        end
+    end
+    jhmi.CBCB(iSlice, :) =  jhmi.CBCB(iSlice, :)/ jhmi.CBCB(iSlice, 1);
+    jhmi.CBCT(iSlice, :) =  jhmi.CBCT(iSlice, :)/ jhmi.CTCT(iSlice);
+    
+    waitbar(iC/length(imgC.sliceIdx))
+
+end
+close(h) 

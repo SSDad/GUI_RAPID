@@ -15,13 +15,15 @@ if ~data_main.flag.statData_z(selected.idxSS)
     if exist(statFileName, 'file')
         load(statFileName);
     else
-        [CBCB, CBCT, tumor, imgC] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo, jhOn);
+        [CBCB, CBCT, tumor, imgC] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
         save(statFileName, 'CBCB', 'CBCT', 'tumor', 'imgC');
     end
      data_main.CBCB(selected.idxSS) = CBCB;
      data_main.CBCT(selected.idxSS) = CBCT;
      data_main.tumor(selected.idxSS) = tumor;
      data_main.imgC(selected.idxSS) = imgC;
+     
+     data_main.statFileName = statFileName;
 
      data_main.flag.statData_z(selected.idxSS) = true;
      guidata(hFig_main, data_main);
@@ -29,7 +31,6 @@ end
 
 set(data_main.hMenuItem.jhZ, 'Enable', 'on')
 set(data_main.hMenuItem.miZ, 'Enable', 'on')
-     
 
 CBCB = data_main.CBCB(selected.idxSS);
 if strcmp(get(data_main.hMenuItem.AnalysisZ_CBCT, 'checked'), 'on')
@@ -69,3 +70,8 @@ for iT = 1:length(fieldName)
         set(hAxis.Stat_zTime2d(iT), 'ylim', [min(fieldVal(:)) max(fieldVal(:))]); 
     end
 end
+
+%% need to use java to disable tab
+% if strcmp(data_main.hMenuItem.miZ.Checked, 'off')
+%     set(data_main.hStatTab_zTime, 'visible', 'off')
+% end

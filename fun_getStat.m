@@ -1,6 +1,4 @@
-function [CBCB, CBCT, tumor, imgC] = fun_getStat(CT, CB, SS, selected, CBinfo, jhOn)
-
-jh = [];
+function [CBCB, CBCT, tumor, imgC] = fun_getStat(CT, CB, SS, selected, CBinfo)
 
 %% dx dy
 [M1, N1, ~] = size(CT.MM);
@@ -15,6 +13,9 @@ iso.y = (CT.iso(2)-CT.yy(1))/dy;
 contData = cont.data;
 
 nCB = length(CB);
+
+imgC.nCT = nCT;
+imgC.nCB = nCB;
 
 % stat
 tumor.CB = cell(nCT, nCB);
@@ -44,6 +45,7 @@ ind_com = intersect(cont.ind, max(z1):min(z2));
 
 h = waitbar(0, 'Calculating Metrics...');
 
+sliceIdx = 0;
 for iC = 1:length(ind_com)
     iSlice = ind_com(iC);  % slice
 %     iSlice = 15;
@@ -86,6 +88,8 @@ for iC = 1:length(ind_com)
 
     % save slices
     imgC.CT{iSlice} = IC_CT;
+    sliceIdx = sliceIdx+1;
+    imgC.sliceIdx(sliceIdx) = iSlice;
     
     % convert to uint8 for similarity calculation
     IC_CT8 = uint8(IC_CT / 256);

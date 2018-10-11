@@ -11,6 +11,7 @@ function varargout = RAPID(varargin)
 % v6_CB2CT 
 % v6_mrn search
 % v7 - tumor segmentation
+% v8 - joint histogram mutual information
 
 % Zhen Ji
 % April 2018 
@@ -20,7 +21,7 @@ function varargout = RAPID(varargin)
 hFig_main = figure('MenuBar',            'none', ...
                     'Toolbar',              'none', ...
                     'HandleVisibility',  'callback', ...
-                    'Name',                'RAPID_6c', ...
+                    'Name',                'RAPID_8', ...
                     'NumberTitle',      'off', ...
                     'Units',                 'normalized',...
                     'Position',             [0.1 0.1 0.8 0.8],...
@@ -33,7 +34,7 @@ data_main.hToolbar = hToolbar;
 [hMenu, hMenuItem] = addManu(hFig_main);
 data_main.hMenu = hMenu;
 data_main.hMenuItem = hMenuItem;
-[hPanel, hTable, hPushbutton, hAxis, hPlotObj, hText, Param] = addPanel(hFig_main);
+[hPanel, hTable, hPushbutton, hAxis, hPlotObj, hText, Param, hStatTab_zTime] = addPanel(hFig_main);
 data_main.hPanel = hPanel;
 data_main.hTable = hTable;
 data_main.hPushbutton = hPushbutton;
@@ -41,6 +42,7 @@ data_main.hAxis = hAxis;
 data_main.hPlotObj = hPlotObj;
 data_main.hText = hText;
 data_main.Param = Param;
+data_main.hStatTab_zTime = hStatTab_zTime;
 data_main.hFig_main = hFig_main;
 data_main.editBoxText_pt = [];
 
