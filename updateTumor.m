@@ -33,20 +33,15 @@ switch panelTag
             
         OffSet = tumorOffSet(selected.iSlice.z, :);
         
-        for n = 1:2
-            x = xy{n}(:,2)+OffSet(1);
-            y = xy{n}(:,1)+OffSet(2);
-            xx = x*dx+data_main.CT.xx(1);
-            yy = y*dy+data_main.CT.yy(1);
-            set(hPlotObj.tumor(n), 'xdata', xx, 'ydata', yy, 'visible', 'on');    
+        if isnan(OffSet(1))
+            set(hPlotObj.tumor, 'xdata', [], 'ydata', []);    
+        else
+            for n = 1:2
+                x = xy{n}(:,2)+OffSet(1);
+                y = xy{n}(:,1)+OffSet(2);
+                xx = x*dx+data_main.CT.xx(1);
+                yy = y*dy+data_main.CT.yy(1);
+                set(hPlotObj.tumor(n), 'xdata', xx, 'ydata', yy, 'visible', 'on');    
+            end
         end
-%         set(hPlotObj.tumor(2), 'xdata', [], 'ydata', [], 'visible', 'on');    
-%         if ~isempty(tumor2)
-%             xy = tumor2{selected.iSlice.z};
-%             x = xy(:,2)+OffSet(1);
-%             y = xy(:,1)+OffSet(2);
-%             xx = x*dx+data_main.CT.xx(1);
-%             yy = y*dy+data_main.CT.yy(1);
-%             set(hPlotObj.tumor(2), 'xdata', xx, 'ydata', yy, 'visible', 'on');    
-%         end
 end
