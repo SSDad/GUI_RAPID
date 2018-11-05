@@ -22,8 +22,9 @@ maxV = double(maxV);
 %     [jh.CTCT] = fun_imgJH(CT, CT, maxV);
 %     [mi_CTCT] = fun_calMI(jh.CTCT);
 
+nib = 10; % number in bin
     for iCB = 1:size(CB, 3)
-        [jh{iCB}] = fun_imgJH(CT, CB(:,:,iCB), maxV);
+        [jh{iCB}] = fun_imgJH(CT, CB(:,:,iCB), maxV, nib);
         [mi(iCB)] = fun_calMI(jh{iCB});
     end
     

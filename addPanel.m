@@ -349,7 +349,7 @@ for iT = 1:length(titleName)
                                                 'Position',     [0.525 0.15 0.425 0.75]);
                                                 
                                                 
-    if ismember(iT, [2 3 4])
+    if ismember(iT, [2 3 4 7])
         set(hAxis.Stat_zTime2d(iT),'Ydir','reverse')
         set(hAxis.Stat_zTime3d(iT),'Zdir','reverse')
     end

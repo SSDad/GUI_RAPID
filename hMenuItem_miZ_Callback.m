@@ -9,7 +9,8 @@ if strcmp(data_main.hMenuItem.miZ.Checked, 'off')
     
     load(data_main.statFileName);
     if ~exist('jhmi', 'var')
-        [jhmi] = fun_jhmi(data_main.imgC(data_main.selected.idxSS));
+        nib = 10;
+        [jhmi] = fun_jhmi(data_main.imgC(data_main.selected.idxSS), nib);
         save(data_main.statFileName, 'jhmi', '-append');
     end
     

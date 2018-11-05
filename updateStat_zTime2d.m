@@ -4,6 +4,8 @@ hFig_main = data_main.hFig_main;
 selected = data_main.selected;
 statFileName = fullfile(data_main.fd_data, data_main.RadoncIDFolder,...
                                 [data_main.RadoncID, '_StatData_', num2str(selected.idxSS), '.mat']);
+imgFileName = fullfile(data_main.fd_data, data_main.RadoncIDFolder,...
+                                [data_main.RadoncID, '_ImgData_', num2str(selected.idxSS), '.mat']);
 hAxis = data_main.hAxis;
 
 if ~data_main.flag.statData_z(selected.idxSS)
@@ -14,9 +16,13 @@ if ~data_main.flag.statData_z(selected.idxSS)
 
     if exist(statFileName, 'file')
         load(statFileName);
+        if exist(imgFileName, 'file')
+            load(imgFileName);
+        end
     else
         [CBCB, CBCT, tumor, imgC] = fun_getStat(data_main.CT, data_main.CB, data_main.SS, selected, data_main.CBinfo);
-        save(statFileName, 'CBCB', 'CBCT', 'tumor', 'imgC');
+        save(statFileName, 'CBCB', 'CBCT', 'tumor');
+        save(imgFileName, 'imgC');
     end
      data_main.CBCB(selected.idxSS) = CBCB;
      data_main.CBCT(selected.idxSS) = CBCT;
