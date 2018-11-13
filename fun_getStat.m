@@ -35,7 +35,7 @@ CBCT = struct('nmse', NaN(nCT, nCB), ...
                     'fsim',   NaN(nCT, nCB), ...
                     'areaDelta', NaN(nCT, nCB), ...
                     'morphDelta', NaN(nCT, nCB));
-
+nmseCB = CBCB.nmse;
 for iCB = 1:nCB
     z1(iCB) = CB(iCB).ind1(1);
     z2(iCB) = CB(iCB).ind2(1);
@@ -117,24 +117,19 @@ for iC = 1:length(ind_com)
     imgC.CB{iSlice} = IC_CB;
     
     IC_CB = double(IC_CB); % 3d stack
-
+    IC_CT = double(IC_CT);
+    
     % max intensity for ct and cb stack
     maxV = max(max(IC_CT(:)), max(IC_CB(:)));
     maxV = double(maxV);
-    
+
     % ct pdf
     VCT = IC_CT(BW);  % pixels inside structure
-    nBin = 100;
 
-%     binEdges = -0.5:1:maxV+0.5;
-    binEdges = -1:10:maxV+1;
+    binEdges = 0:10:maxV;
     numCT = histcounts(VCT, binEdges);
     pdfVCT = numCT/sum(numCT);
     [mie_CTCT(iSlice), jpdfe, entrp] = fun_mie(pdfVCT, pdfVCT);
-
-%     if jhOn
-%         jh.CTCT{iSlice} = imgJH;
-%     end
 
     %% CB
     for iCB = 1:nCB
@@ -152,38 +147,21 @@ for iC = 1:length(ind_com)
 
             junk2 = corrcoef(pdfVCT, pdf_CB(iCB, :));
             CBCT.CC(iSlice, iCB) = junk2(1,2);
-            
+            clear junk*;
             % pdf mi
             [CBCB.mie(iSlice, iCB), jpdfe, entrp] = fun_mie(pdf_CB(1, :), pdf_CB(iCB, :));
             [CBCT.mie(iSlice, iCB), jpdfe, entrp] = fun_mie(pdfVCT, pdf_CB(iCB, :));
  
-%             [imgJH] = fun_imgJH(IC_CB(:,:,1), IC_CB(:,:,iCB), maxV);
-%             [CBCB.mie(iSlice, iCB)] = fun_calMI(imgJH);
-%             if jhOn
-%                 jh.CBCB{iSlice, iCB} = imgJH;
-%             end
-%             
-%             [imgJH] = fun_imgJH(IC_CT, IC_CB(:,:,iCB), maxV);
-%             [CBCT.mie(iSlice, iCB)] = fun_calMI(imgJH);
-%             if jhOn
-%                 jh.CBCT{iSlice, iCB} = imgJH;
-%             end
-
             % NMSE - Normalized Mean Square Error
-            if iCB ==1
-                IC_CB1 = ICB;
-                IC_CB1_norm = IC_CB1/max(IC_CB1(:));
-                junk2 = IC_CB1_norm.^2;
-                IC_CB1_norm2sum = sum(junk2(:))/numel(junk2);
+                junk1 = IC_CB(:,:,1); 
+                junk = (junk1(:)-ICB(:)).^2;
+                CBCB.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(junk1(:))*sum(ICB(:)));
+                clear junk*;
                 
-                IC_CB1_abs = IC_CB1/max(IC_CB(:));
-                junk2 = IC_CB1_abs.^2;
-                IC_CB1_abs2sum = sum(junk2(:))/numel(junk2);
-            end
-            
-                IC_CB_norm = ICB/max(IC_CB(:));
-                CBCB.nmse(iSlice, iCB) = immse(IC_CB_norm, IC_CB1_abs)/IC_CB1_abs2sum;
-            
+                junk = (IC_CT(:)-ICB(:)).^2;
+                CBCT.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(IC_CT(:))*sum(ICB(:)));
+                clear junk*;
+                
             % area and morph change
 %             if iSlice == CT.idx_iso
                 [tumor.CB{iSlice, iCB}] = fun_tumorSegmentation(ICB);
@@ -193,7 +171,7 @@ for iC = 1:length(ind_com)
             
             % FSIM - Feature Similarity
             ICB8 = uint8(ICB / 256);
-            IC_CB18 = uint8(IC_CB1 / 256);
+            IC_CB18 = uint8(IC_CB(:,:,1) / 256);
             CBCB.fsim(iSlice, iCB) = fun_FeatureSIM23(ICB8, IC_CB18);
 
             CBCT.fsim(iSlice, iCB) = fun_FeatureSIM23(ICB8, IC_CT8);

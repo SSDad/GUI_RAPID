@@ -80,8 +80,17 @@ set(data_main.hMenuItem.CBInfo, 'Enable', 'off', 'Checked', 'off')
 % analysisZ
 set(data_main.hMenuItem.AnalysisZ, 'Enable', 'off', 'Checked', 'off')
 set(data_main.hMenuItem.AnalysisZ_CBCT, 'Enable', 'off', 'Checked', 'off')
+
+set(data_main.hMenuItem.jhZ, 'Checked', 'off')
+set(data_main.hMenuItem.miZ, 'Checked', 'off')
+
 set(data_main.hPanel.pdf_zTime, 'visible', 'off');
 set(data_main.hPanel.Stat_zTime, 'visible', 'off');
+
+if isfield( data_main.hPlotObj, 'stat_zTime3d')
+    delete(data_main.hPlotObj.stat_zTime3d);
+    data_main.hPlotObj = rmfield(data_main.hPlotObj, 'stat_zTime3d');
+end
 
 % tumor
 set(data_main.hMenuItem.tumor, 'Checked', 'off');
@@ -92,9 +101,6 @@ if isfield( data_main, 'tumor')
     data_main = rmfield(data_main, 'tumor');
 end
 
-if isfield( data_main.hPlotObj, 'stat_zTime3d')
-    data_main.hPlotObj = rmfield(data_main.hPlotObj, 'stat_zTime3d');
-end
 
 data_main.flag.statData_z = false(100, 1);
 

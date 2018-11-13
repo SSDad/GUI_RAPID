@@ -22,6 +22,8 @@ if strcmp(data_main.hMenuItem.miZ.Checked, 'off')
 
     initializeStat_zTime3d(data_main);
     updateStat_zTime3d(data_main);
+    
+    data_main.hStatTab_zTime(7).Parent.SelectedTab = data_main.hStatTab_zTime(7);
 else
     set(data_main.hMenuItem.miZ, 'checked', 'off');
 end

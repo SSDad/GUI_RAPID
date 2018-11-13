@@ -17,7 +17,8 @@ fieldName = fields(CBCB);
 for iT = 1:length(fieldName)
     fieldVal = getfield(CBCB, fieldName{iT});
     
-    [M, N] = size(fieldVal);
+    if ~isempty(fieldVal)
+        [M, N] = size(fieldVal);
     
     xx = 1:N;
     for iy = 1:M
@@ -33,6 +34,7 @@ for iT = 1:length(fieldName)
     ylim = get(data_main.hAxis.Stat_zTime2d(iT), 'ylim');
     set(data_main.hAxis.Stat_zTime3d(iT), 'zlim',   ylim)
     
+    end
     %     set(data_main.hAxis.Stat_zTime3d(iT), 'zlim', [0 0.2]);
 %    rotate3d(data_main.hAxis.Stat_zTime3d(iT), 'on')
 %     for ix = 1:N
