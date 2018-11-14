@@ -46,4 +46,6 @@ data_main.hStatTab_zTime = hStatTab_zTime;
 data_main.hFig_main = hFig_main;
 data_main.editBoxText_pt = [];
 
+data_main.nib_jh = 50;
+
 guidata(hFig_main, data_main);
