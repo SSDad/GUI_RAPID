@@ -2,6 +2,7 @@ function [jhmi] = fun_jhmi(imgC, nib)
 
 jhmi.CBCB = NaN(imgC.nCT, imgC.nCB);
 jhmi.CBCT = NaN(imgC.nCT, imgC.nCB);
+jhmi.CTCT= NaN(imgC.nCT, 1);
 
 h = waitbar(0, 'Calculating Joint Histogram MI...');
 

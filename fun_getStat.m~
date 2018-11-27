@@ -19,26 +19,25 @@ idx_ITVi = n;
 [cont] = fun_getContour(idx_ITVi, SS.structures, SS.sNames, CT.zz);
 contData = cont.data;
 
-S_ITVi = nan(nCT, 1);
 for iSlice = 1:length(contData)
-    if ~isempty(contData{iSlice})
-        S_ITVi(iSlice) = 0;
+    if contData{iSlice}
         for iS = 1:length(contData{iSlice})
-            points = contData{iSlice}(iS).points;
-            x = points(:,1);
-            y = points(:,2);
+        points = contData{iSlice}(iS).points;
+        x = points(:,1);
+        y = points(:,2);
 
-            S_ITVi(iSlice) = S_ITVi(iSlice)+polyarea(x, y);              % area
-        end
+        % shift and scale
+        x = x-CT.xx(1); x = x/dx;
+        y = y-CT.yy(1); y = y/dy;
+        xx = [xx;x]; 
+        yy = [yy;y];
     end
-end
+
+
 
 %% contours
-
-if selected.idxSS ~= idx_ITVi
-    [cont] = fun_getContour(selected.idxSS, SS.structures, SS.sNames, CT.zz);
-    contData = cont.data;
-end
+[cont] = fun_getContour(selected.idxSS, SS.structures, SS.sNames, CT.zz);
+contData = cont.data;
 
 nCB = length(CB);
 
@@ -181,16 +180,15 @@ for iC = 1:length(ind_com)
             [CBCT.mie(iSlice, iCB), jpdfe, entrp] = fun_mie(pdfVCT, pdf_CB(iCB, :));
  
             % NMSE - Normalized Mean Square Error
+            % find ITVi
             
                 junk1 = IC_CB(:,:,1); 
                 junk = (junk1(:)-ICB(:)).^2;
-%                 CBCB.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(junk1(:))*sum(ICB(:)));
-                CBCB.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(S_ITVi(iSlice));
+                CBCB.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(junk1(:))*sum(ICB(:)));
                 clear junk*;
                 
                 junk = (IC_CT(:)-ICB(:)).^2;
-%                 CBCT.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(IC_CT(:))*sum(ICB(:)));
-                CBCT.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(S_ITVi(iSlice));
+                CBCT.nmse(iSlice, iCB) = numel(junk)*sum(junk(:))/(sum(IC_CT(:))*sum(ICB(:)));
                 clear junk*;
                 
             % area and morph change
