@@ -14,7 +14,7 @@ for n = 1:2
     end
 end
 
-areaDelta = (A(1)-A(2))/A(1);
+areaDelta = (A(2)-A(1))/A(1);
 
 J1 = xor(BW{1}, BW{2});
 J2 = and(BW{1}, BW{2});

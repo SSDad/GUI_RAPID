@@ -1,8 +1,8 @@
 function [points] = fun_tumorSegmentation(I_CB, ITViP)
 
 points = [];
+
 I_CB = uint16(I_CB);
-[M, N] = size(I_CB);
 level = graythresh(I_CB);
 % level = level*2;
 BW = im2bw(I_CB, level);
@@ -18,11 +18,6 @@ for n = 1:length(ITViP)
 %         points = pts;
 %         break;
 %     end
-    BW_ITV = poly2mask(pts(:,1), pts(:,2), M, N);
-    junk = and(BW, BW_ITV);
-    if any(junk(:))
-        points = pts;
-        break;
-    end        
+    
 end
 % end

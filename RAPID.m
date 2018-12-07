@@ -13,13 +13,14 @@ function varargout = RAPID(varargin)
 % v7 - tumor segmentation
 % v8 - joint histogram mutual information
 % v9 - new nmse 
+% v10 - tumor detection
 
 % Zhen Ji
 % April 2018 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% main window
-data_main.version = 'RAPID_9';
+data_main.version = 'RAPID_10';
 
 hFig_main = figure('MenuBar',            'none', ...
                     'Toolbar',              'none', ...

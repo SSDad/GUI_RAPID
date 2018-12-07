@@ -128,7 +128,6 @@ for iC = 1:length(ind_com)
 
     % save slices
     imgC.CT{iSlice} = IC_CT;
-    imgC.CT_tumor{iSlice} = IC_CT_tumor;
     sliceIdx = sliceIdx+1;
     imgC.sliceIdx(sliceIdx) = iSlice;
     
@@ -221,7 +220,7 @@ for iC = 1:length(ind_com)
             CBCT.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(S_ITVi(iSlice));
             clear junk*;
              
-            % for diagnosis
+            % 
             if iSlice == 12 && iCB == 7
                 bbb = 0;
             end
