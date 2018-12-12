@@ -21,17 +21,17 @@ dy = data_main.CT.yy(2)-data_main.CT.yy(1);
 switch panelTag
     case '1'
         if isempty(tumor2)
-            xy{1} = tumor1{selected.iSlice.z};
+            xy{1} = tumor1{iSlice};
             xy{2} = [nan nan];
         elseif isempty(tumor1)
             xy{1} = [nan nan];
-            xy{2} = tumor2{selected.iSlice.z, selected.idxDate};
+            xy{2} = tumor2{iSlice, selected.idxDate};
         else
-            xy{1} = tumor1{selected.iSlice.z};
-            xy{2} = tumor2{selected.iSlice.z, selected.idxDate};
+            xy{1} = tumor1{iSlice};
+            xy{2} = tumor2{iSlice, selected.idxDate};
         end
             
-        OffSet = tumorOffSet(selected.iSlice.z, :);
+        OffSet = tumorOffSet(iSlice, :);
         
         if isnan(OffSet(1))
             set(hPlotObj.tumor, 'xdata', [], 'ydata', []);    
