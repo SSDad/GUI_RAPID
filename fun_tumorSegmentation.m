@@ -1,28 +1,31 @@
-function [points] = fun_tumorSegmentation(I_CB, ITViP)
+function [BWO, points] = fun_tumorSegmentation(I_CB, pointsOnSlice, ITViP)
 
-points = [];
+%% detected mask
 I_CB = uint16(I_CB);
 [M, N] = size(I_CB);
-level = graythresh(I_CB);
-% level = level*2;
-BW = im2bw(I_CB, level);
+% level = graythresh(I_CB);
+level = 500/2^16;
+BW = imbinarize(I_CB, level);
 
-BD = bwboundaries(BW);
+%% structure mask
+BWSS = zeros(size(I_CB));
+for n = 1:length(pointsOnSlice)
+    pts = pointsOnSlice{n};
+    BWS{n} = poly2mask(pts(:,1), pts(:,2), M, N);
+    BWSS = or(BWSS, BWS{n});
+end
 
-%% ITV centroid inside tumor
-% for iB = 1:length(BD)
-pts = BD{1};
-for n = 1:length(ITViP)
-%     cent = mean(ITViP{n});
+%% overlap
+BWO = and(BWSS, BW);
+BD = bwboundaries(BWO);
+points = [];
+
+for iB = 1:length(BD)
+    points = [points; BD{iB}];
+end
+
+%     cent = mean(ITViP{n});  % ITV centroid inside tumor
 %     if inpolygon(cent(1), cent(2), pts(:,1), pts(:,2))
 %         points = pts;
 %         break;
 %     end
-    BW_ITV = poly2mask(pts(:,1), pts(:,2), M, N);
-    junk = and(BW, BW_ITV);
-    if any(junk(:))
-        points = pts;
-        break;
-    end        
-end
-% end

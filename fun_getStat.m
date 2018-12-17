@@ -55,8 +55,8 @@ imgC.nCT = nCT;
 imgC.nCB = nCB;
 
 % stat
-tumor.CB = cell(nCT, nCB);
-tumor.CT = cell(nCT, 1);
+% tumor.CB = cell(nCT, nCB);
+% tumor.CT = cell(nCT, 1);
 tumor.OffSet = nan(nCT, 2);
 
 CBCB = struct('nmse', NaN(nCT, nCB), ...
@@ -88,7 +88,10 @@ for iC = 1:length(ind_com)
 %     iSlice = 15;
     xx = [];
     yy = [];
-    for iS = 1:length(contData{iSlice})
+    
+    nSeg = length(contData{iSlice});
+    pointsOnSlice = cell(nSeg, 1);
+    for iS = 1:nSeg
         points = contData{iSlice}(iS).points;
         x = points(:,1);
         y = points(:,2);
@@ -98,6 +101,8 @@ for iC = 1:length(ind_com)
         y = y-CT.yy(1); y = y/dy;
         xx = [xx;x]; 
         yy = [yy;y];
+        
+        pointsOnSlice{iS} = [x y];
     end
     
     %% CT
@@ -111,6 +116,11 @@ for iC = 1:length(ind_com)
     y2 = ceil(max(yy))+marg;
     IC_CT = imcrop(I_CT, [x1 y1 x2-x1 y2-y1]);
 
+    for iS = 1:nSeg
+        pointsOnSlice{iS}(:,1) = pointsOnSlice{iS}(:,1) - x1;
+        pointsOnSlice{iS}(:,2) = pointsOnSlice{iS}(:,2) - y1;
+    end        
+        
     if iSlice == CT.idx_iso
         iso.x = iso.x-x1;
         iso.y = iso.y-y1;
@@ -151,7 +161,7 @@ for iC = 1:length(ind_com)
              end
              
              tumor.OffSet(iSlice, :) = [x1 y1];
-             tumor.CT{iSlice} = fun_tumorSegmentation(IC_CT_tumor, ITViP);
+             [tumor.CT(iSlice).BWO, tumor.CT(iSlice).points] = fun_tumorSegmentation(IC_CT_tumor, pointsOnSlice, ITViP);
          end
     end
     
@@ -229,11 +239,11 @@ for iC = 1:length(ind_com)
             % area and morph change
             if selected.idxSS == idx_ITVi15 
                 if iSlice <= length(cont_ITVi) && ~isempty(cont_ITVi(iSlice).points)
-                    [tumor.CB{iSlice, iCB}] = fun_tumorSegmentation(ICB_tumor, ITViP);
+                    [tumor.CB(iSlice, iCB).BWO, tumor.CB(iSlice, iCB).points] = fun_tumorSegmentation(ICB_tumor, pointsOnSlice, ITViP);
                     [CBCB.areaDelta(iSlice, iCB), CBCB.morphDelta(iSlice, iCB)] = ...
-                        fun_getDelta(tumor.CB{iSlice, 1}, tumor.CB{iSlice, iCB}, size(ICB, 1), size(ICB, 2));
+                        fun_getDelta(tumor.CB(iSlice, 1), tumor.CB(iSlice, iCB), size(ICB, 1), size(ICB, 2));
                     [CBCT.areaDelta(iSlice, iCB), CBCT.morphDelta(iSlice, iCB)] =...
-                        fun_getDelta(tumor.CT{iSlice}, tumor.CB{iSlice, iCB}, size(ICB, 1), size(ICB, 2));
+                        fun_getDelta(tumor.CT(iSlice), tumor.CB(iSlice, iCB), size(ICB, 1), size(ICB, 2));
                 end
             end
             
