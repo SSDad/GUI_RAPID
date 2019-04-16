@@ -18,7 +18,7 @@ tumorOffSet = data_main.tumor(selected.idxSS).OffSet;
 dx = data_main.CT.xx(2)-data_main.CT.xx(1);
 dy = data_main.CT.yy(2)-data_main.CT.yy(1);
 
-if ~isempty(tumor2{1}) || ~isempty(tumor1{1})
+if ~isempty(tumor2) || ~isempty(tumor1)
 switch panelTag
     case '1'
         if isempty(tumor2)

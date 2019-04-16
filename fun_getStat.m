@@ -55,8 +55,8 @@ imgC.nCT = nCT;
 imgC.nCB = nCB;
 
 % stat
-% tumor.CB = cell(nCT, nCB);
-% tumor.CT = cell(nCT, 1);
+tumor.CB = cell(nCT, nCB);
+tumor.CT = cell(nCT, 1);
 tumor.OffSet = nan(nCT, 2);
 
 CBCB = struct('nmse', NaN(nCT, nCB), ...
