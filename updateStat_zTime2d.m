@@ -40,6 +40,9 @@ if ~data_main.flag.statData_z(selected.idxSS)
 
 %      data_main.CBCT(selected.idxSS) = CBCT;
      
+     data_main.tumor(selected.idxSS).CT = [];
+     data_main.tumor(selected.idxSS).OffSet = [];
+     data_main.tumor(selected.idxSS).CB = [];
      data_main.tumor(selected.idxSS) = tumor;
      data_main.imgC(selected.idxSS) = imgC;
      

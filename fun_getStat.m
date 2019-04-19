@@ -55,9 +55,6 @@ imgC.nCT = nCT;
 imgC.nCB = nCB;
 
 % stat
-tumor.CB = cell(nCT, nCB);
-tumor.CT = cell(nCT, 1);
-tumor.OffSet = nan(nCT, 2);
 
 CBCB = struct('nmse', NaN(nCT, nCB), ...
                     'CC',     NaN(nCT, nCB), ...
@@ -146,6 +143,9 @@ for iC = 1:length(ind_com)
     IC_CT8 = uint8(IC_CT / 256);
     
     % tumor on CT
+    % tumor.CB = cell(nCT, nCB);
+    % tumor.CT = cell(nCT, 1);
+    %tumor.OffSet = nan(nCT, 2);
     if selected.idxSS == idx_ITVi15
          if iSlice <= length(cont_ITVi) && ~isempty(cont_ITVi(iSlice).points)
              for iS = 1:length(cont_ITVi(iSlice))
@@ -163,6 +163,9 @@ for iC = 1:length(ind_com)
              tumor.OffSet(iSlice, :) = [x1 y1];
              [tumor.CT(iSlice).BWO, tumor.CT(iSlice).points] = fun_tumorSegmentation(IC_CT_tumor, pointsOnSlice, ITViP);
          end
+    else
+        tumor.CT = [];
+        tumor.OffSet = [];
     end
     
     % 3D mask for cb   
@@ -245,6 +248,8 @@ for iC = 1:length(ind_com)
                     [CBCT.areaDelta(iSlice, iCB), CBCT.morphDelta(iSlice, iCB)] =...
                         fun_getDelta(tumor.CT(iSlice), tumor.CB(iSlice, iCB), size(ICB, 1), size(ICB, 2));
                 end
+            else
+                tumor.CB = [];
             end
             
             % FSIM - Feature Similarity
