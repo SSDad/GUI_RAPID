@@ -13,7 +13,9 @@ function hMenuItem_Patient_Callback(src, evnt)
             if ~exist(fullfile(tempdir, 'RAPID'), 'dir')
                 mkdir(fullfile(tempdir, 'RAPID'));
             end
-            save(mat_ptFolder, 'fd_data');
+            if fd_data
+                save(mat_ptFolder, 'fd_data');
+            end
         end
         
         if fd_data ~= 0

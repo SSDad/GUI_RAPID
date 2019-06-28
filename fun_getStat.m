@@ -47,6 +47,24 @@ idx_ITVi15 = n;
 if selected.idxSS ~= idx_ITVi
     [cont] = fun_getContour(selected.idxSS, SS.structures, SS.sNames, CT.zz);
     contData = cont.data;
+
+    % calculate area
+    S_select = nan(nCT, 1);
+    for iSlice = 1:length(contData)
+        cont_select(iSlice).points = [];
+        if ~isempty(contData{iSlice})
+            S_select(iSlice) = 0;
+            for iSeg = 1:length(contData{iSlice})
+                points = contData{iSlice}(iSeg).points;
+                x = points(:,1);
+                y = points(:,2);
+
+                cont_select(iSlice).points{iSeg} = points;
+                S_select(iSlice) = S_select(iSlice)+polyarea(x, y);              % area
+            end
+        end
+    end
+
 end
 
 nCB = length(CB);
@@ -225,13 +243,19 @@ for iC = 1:length(ind_com)
             [CBCT.mie(iSlice, iCB), jpdfe, entrp] = fun_mie(pdfVCT, pdf_CB(iCB, :));
  
             % NMSE - Normalized Mean Square Error
+            if contains(SS.sNames{selected.idxSS}, 'ITVi')
+                structArea = S_ITVi(iSlice);
+            else
+                structArea = S_select(iSlice);
+            end
+                
             junk1 = IC_CB(:,:,1); 
             junk = (junk1(:)-ICB(:)).^2;
-            CBCB.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(S_ITVi(iSlice));
+            CBCB.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(structArea);
             clear junk*;
 
             junk = (IC_CT(:)-ICB(:)).^2;
-            CBCT.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(S_ITVi(iSlice));
+            CBCT.nmse(iSlice, iCB) = sum(junk(:))/1000/1000/sqrt(structArea);
             clear junk*;
              
             % for diagnosis
