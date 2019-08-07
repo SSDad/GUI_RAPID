@@ -30,7 +30,7 @@ hPlotObj = data_main.hPlotObj;
 hText = data_main.hText;
 
 % Axial
-selected.iSlice.z = round(size(CT.MM,3)/2);
+selected.iSlice.z = roudn(size(CT.MM,3)/2);
 ICT{1} = CT.MM(:, :, selected.iSlice.z);
 set(hPlotObj.CT(1), 'CData', []); 
 set(hPlotObj.CT(1), 'CData', ICT{1}); 
@@ -47,7 +47,7 @@ set(hPlotObj.CT(1), 'XData', CT.xx, 'YData', CT.yy);
 
 % Saggittal
 CT.dx = CT.xx(2)-CT.xx(1);
-selected.iSlice.x = round(size(CT.MM,2)/2);
+selected.iSlice.x = 10;
 ICT{2} = rot90(squeeze(CT.MM(:, selected.iSlice.x, :)));
 
 set(hPlotObj.CT(2), 'CData', []); 
@@ -66,7 +66,7 @@ set(hPlotObj.CT(2), 'XData', CT.yy, 'YData', CT.zz);
 
 % Coronal
 CT.dy = CT.yy(2)-CT.yy(1);
-selected.iSlice.y = round(size(CT.MM,1)/2);
+selected.iSlice.y = 10;
 ICT{3} = rot90(squeeze(CT.MM(selected.iSlice.y, :, :)));
 
 set(hPlotObj.CT(3), 'CData', []); 

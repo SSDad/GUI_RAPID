@@ -38,7 +38,6 @@ function hMenuItem_Patient_Callback(src, evnt)
 %             jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
             data_main.fd_data = fd_data;
-            data_main.RadoncID = RadoncID;
             guidata(hFig_main, data_main);
 
             set(hFig_main, 'WindowScrollWheelFcn', []);

@@ -34,9 +34,9 @@ if ~data_main.flag.SSLoaded
 %     set(data_main.hTable.SS, 'Data', tableData.Struct, 'Visible',   'on');
     data_main.hTable.SS.Data = tableData.Struct;
     data_main.hPanel.SS.Visible = 'on';
-    jScroll = findjobj(data_main.hTable.SS);
-jTable = jScroll.getViewport.getView;
-jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+%     jScroll = findjobj(data_main.hTable.SS);
+% jTable = jScroll.getViewport.getView;
+% jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
     
     % PTV index
     selected = data_main.selected;
@@ -52,9 +52,9 @@ jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
     % iso
     CT = data_main.CT;
     hPlotObj = data_main.hPlotObj;
-    set(hPlotObj.iso.z, 'xdata', CT.iso(1), 'ydata', CT.iso(2));
-    set(hPlotObj.iso.x, 'xdata', CT.iso(2), 'ydata', CT.zz(1)-CT.iso(3)+CT.zz(end));
-    set(hPlotObj.iso.y, 'xdata', CT.iso(1), 'ydata', CT.zz(1)-CT.iso(3)+CT.zz(end));
+%     set(hPlotObj.iso.z, 'xdata', CT.iso(1), 'ydata', CT.iso(2));
+%     set(hPlotObj.iso.x, 'xdata', CT.iso(2), 'ydata', CT.zz(1)-CT.iso(3)+CT.zz(end));
+%     set(hPlotObj.iso.y, 'xdata', CT.iso(1), 'ydata', CT.zz(1)-CT.iso(3)+CT.zz(end));
     set(data_main.hMenuItem.iso, 'Enable', 'on')
     
     % check menuitem

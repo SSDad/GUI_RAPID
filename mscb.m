@@ -26,7 +26,7 @@ if isfield(data_main.selected, 'Panel')
         end
         
         updateCTImage(hFig_main, panelTag, iSlice);
-        showISO(hFig_main, panelTag, iSlice)
+%         showISO(hFig_main, panelTag, iSlice)
 
         if data_main.flag.SSLoaded
             updateSS(hFig_main, panelTag, iSlice)

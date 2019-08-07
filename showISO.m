@@ -3,7 +3,7 @@ function showISO(hFig_main, panelTag, iSlice)
 data_main = guidata(hFig_main);
 CT = data_main.CT;
 hPlotObj = data_main.hPlotObj;
-iso = data_main.iso;
+% iso = data_main.iso;
 
 switch panelTag
     case '1'

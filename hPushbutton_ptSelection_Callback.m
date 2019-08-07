@@ -10,12 +10,12 @@ RadoncIDFolder = data_main.RadoncIDfromTable;
 set(hFig_main, 'WindowScrollWheelFcn', @mscb);
 data_main.RadoncIDFolder = RadoncIDFolder;
 
-idx = strfind(RadoncIDFolder, '_');
-if ~isempty(idx)
-     data_main.RadoncID = RadoncIDFolder(1:idx-1);
-else
-    data_main.RadoncID = RadoncIDFolder;
-end
+% idx = strfind(RadoncIDFolder, '_');
+% if ~isempty(idx)
+%      data_main.RadoncID = RadoncIDFolder(1:idx-1);
+% else
+%     data_main.RadoncID = RadoncIDFolder;
+% end
 
 % table
 set(data_main.hPanel.PL, 'visible', 'off');
@@ -116,15 +116,15 @@ ptInfoFN = fullfile(data_main.fd_data, RadoncIDFolder, [data_main.RadoncID, '_CT
 load(ptInfoFN)
 ptInfoData{1} = data_main.RadoncID;
 ptInfoData{2} = dcmInfo.PatientName.FamilyName;
-ptInfoData{3} = dcmInfo.PatientName.GivenName;
+ptInfoData{3} = [];
 ptInfoData{4} = dcmInfo.PatientSex;
 ptInfoData{5} = dcmInfo.PatientBirthDate;
 
 set(data_main.hTable.ptInfo, 'Data', ptInfoData');   
 set(data_main.hPanel.ptInfo, 'visible', 'on');
-jScroll = findjobj(data_main.hTable.ptInfo);
-jTable = jScroll.getViewport.getView;
-jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+% jScroll = findjobj(data_main.hTable.ptInfo);
+% jTable = jScroll.getViewport.getView;
+% jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
 
 %% save data
