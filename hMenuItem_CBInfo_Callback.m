@@ -41,6 +41,7 @@ if strcmp(get(data_main.hMenuItem.CBInfo, 'checked'), 'off')
 
         for iDate = 1:length(CBinfo)
             tableData.dcmInfo{iDate, 1} = ['<html><font color = white >' CBinfo(iDate).date '</font></html>'];
+            CBinfo(iDate).dcmInfo.StationName = '';
             tableData.dcmInfo{iDate, 2} = ['<html><font color = white >' CBinfo(iDate).dcmInfo.StationName '</font></html>'];
             tableData.dcmInfo{iDate, 3} = ['<html><font color = white >' CBinfo(iDate).dcmInfo.ManufacturerModelName '</font></html>'];
             tableData.dcmInfo{iDate, 4} = ['<html><font color = white >' num2str(CBinfo(iDate).dcmInfo.SliceThickness) '</font></html>'];
@@ -68,8 +69,8 @@ if strcmp(get(data_main.hMenuItem.CBInfo, 'checked'), 'off')
         set(data_main.hPanel.CBInfo, 'visible', 'on');
         
         jScroll = findjobj(data_main.hTable.CBInfo);
-jTable = jScroll.getViewport.getView;
-jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+% jTable = jScroll.getViewport.getView;
+% jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
     end
 else

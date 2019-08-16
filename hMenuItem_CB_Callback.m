@@ -90,9 +90,9 @@ end
 set(hTable.CBDate, 'Data', CBDate);
 set(hPanel.CBDate, 'Visible', 'on');
 set(hMenuItem.CBDate, 'Enable', 'on', 'Checked', 'on');
-jScroll = findjobj(hTable.CBDate);
-jTable = jScroll.getViewport.getView;
-jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
+% jScroll = findjobj(hTable.CBDate);
+% jTable = jScroll.getViewport.getView;
+% jTable.setAutoResizeMode(jTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 
 % set(hTable.PL, 'Visible', 'off');
 % set(hMenuItem.Patient, 'Checked', 'off');
