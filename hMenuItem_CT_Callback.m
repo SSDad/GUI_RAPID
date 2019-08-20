@@ -13,10 +13,6 @@ if ~data_main.flag.CTLoaded
 %     CT.MMn = single(mat2gray(CT.MM, CT.Lim));
     data_main.CT = CT;
     
-  set(hFig_main, 'Name', [data_main.version, ' - ',...
-                                    data_main.RadoncID, '   ', ...
-                                    data_main.RadoncIDfromTable]);
-  
 else
     CT = data_main.CT;
 end

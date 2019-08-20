@@ -6,7 +6,10 @@ RadoncIDFolder = data_main.RadoncIDfromTable;
 
 %% initialize
 % main figure
-% set(hFig_main, 'Name', ['RAPID_6 - ', RadoncIDFolder]);
+set(hFig_main, 'Name', [data_main.version, ' - ',...
+                                    data_main.RadoncID, '   ', ...
+                                    data_main.RadoncIDfromTable]);
+  
 set(hFig_main, 'WindowScrollWheelFcn', @mscb);
 data_main.RadoncIDFolder = RadoncIDFolder;
 
